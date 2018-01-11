@@ -1,0 +1,8 @@
+{
+  "name": "CADapultFM",
+  "app_id": "ae89e8e6",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
