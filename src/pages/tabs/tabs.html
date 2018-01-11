@@ -1,5 +1,6 @@
-<ion-tabs tabsLayout="icon-start">
-  <ion-tab [root]="tab1Root" tabTitle="DM Tasks" tabIcon="list-box"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="PM Tasks" tabIcon="list-box"></ion-tab>
+<!--<ion-tabs tabsLayout="icon-start">-->
+<ion-tabs tabsLayout="icon-only">
+  <ion-tab [root]="tab1Root" tabTitle="DM Tasks" tabIcon="list-box" tabBadge="3" tabBadgeStyle="danger"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="PM Tasks" tabIcon="list-box" tabBadge="10" tabBadgeStyle="danger"></ion-tab>
   <ion-tab [root]="tab3Root" tabTitle="Settings" tabIcon="settings"></ion-tab>
 </ion-tabs>

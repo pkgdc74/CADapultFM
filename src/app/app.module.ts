@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { PMListPage } from '../pages/pm/pmlist';
+import { PMTasksPage } from '../pages/pm/pmtasks';
 import { SettingsPage } from '../pages/settings/settings';
-import { DMListPage } from '../pages/dm/dmlist';
+import { DMTasksPage } from '../pages/dm/dmtasks';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -14,9 +14,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 @NgModule({
   declarations: [
     MyApp,
-    PMListPage,
+    PMTasksPage,
     SettingsPage,
-    DMListPage,
+    DMTasksPage,
     TabsPage
   ],
   imports: [
@@ -26,9 +26,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    PMListPage,
+    PMTasksPage,
     SettingsPage,
-    DMListPage,
+    DMTasksPage,
     TabsPage
   ],
   providers: [

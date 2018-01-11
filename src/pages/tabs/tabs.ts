@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 
-import { PMListPage } from '../pm/pmlist';
+import { PMTasksPage } from '../pm/pmtasks';
 import { SettingsPage } from '../settings/settings';
-import { DMListPage } from '../dm/dmlist';
+import { DMTasksPage } from '../dm/dmtasks';
 
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
 
-  tab1Root = DMListPage;
-  tab2Root = PMListPage;
+  tab1Root = DMTasksPage;
+  tab2Root = PMTasksPage;
   tab3Root = SettingsPage;
 
   constructor() {
