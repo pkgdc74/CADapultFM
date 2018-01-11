@@ -2,7 +2,7 @@
   "name": "CADapultFM",
   "version": "0.0.1",
   "author": "Praveen Gupta",
-  "homepage": "http://www.cadapultfm.com",
+  "homepage": "https://www.cadapultfm.com/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
