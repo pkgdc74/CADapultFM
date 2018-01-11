@@ -1,8 +1,8 @@
 {
   "name": "CADapultFM",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "Praveen Gupta",
+  "homepage": "http://www.cadapultfm.com",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -42,7 +42,7 @@
     "@ionic/app-scripts": "3.1.6",
     "typescript": "2.4.2"
   },
-  "description": "An Ionic project",
+  "description": "CADapultFM PM DM App",
   "cordova": {
     "plugins": {
       "ionic-plugin-keyboard": {},
