@@ -7,34 +7,33 @@
 </ion-header>
 
 <ion-content>
-  <form>
+  <form #form="ngForm">
     <ion-list>
-      <ion-list-header>
+      <ion-list-header bold>
         Connection Details
       </ion-list-header>
 
       <ion-item>
         <ion-label stacked>Service URL</ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-input type="text" name="url" [(ngModel)]="conInfo.url" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label stacked>Client Id</ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-input type="text" name="cid" [(ngModel)]="conInfo.cid" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label stacked>User Id</ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-input type="text" name="userid" [(ngModel)]="conInfo.userid" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label stacked>Password</ion-label>
-        <ion-input type="password"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <button ion-button item-left>Connect</button>
+        <ion-input type="password" name="password" [(ngModel)]="conInfo.password" required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label *ngIf="mode.checked">
+        <button ion-button block [disabled]="!form.valid">Connect</button>
+      </ion-item>
+      <ion-item>
+        <ion-label *ngIf="mode.checked" color="danger">
           Work offline mode: On
           <br/>local updates only
         </ion-label>

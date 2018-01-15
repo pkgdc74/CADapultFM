@@ -6,9 +6,17 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
-
-  constructor(public navCtrl: NavController) {
-
+  conInfo:ConnectionInfo={
+    url:"https://www.cadapultfm.com/fmcloudbeta",cid:"FMDemo",userid:"daves",password:"",isValid:false
   }
+  constructor(public navCtrl: NavController) {}
 
+}
+
+export interface ConnectionInfo{
+  url:string,
+  cid:string,
+  userid:string,
+  password:string,
+  isValid:boolean
 }
