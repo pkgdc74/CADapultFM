@@ -1,11 +1,49 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <ion-title text-center>
       Settings
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  
+  <form>
+    <ion-list>
+      <ion-list-header>
+        Connection Details
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label stacked>Service URL</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Client Id</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>User Id</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Password</ion-label>
+        <ion-input type="password"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <button ion-button item-left>Connect</button>
+      </ion-item>
+      <ion-item>
+        <ion-label *ngIf="mode.checked">
+          Work offline mode: On
+          <br/>local updates only
+        </ion-label>
+        <ion-label *ngIf="!mode.checked">
+          Work offline mode: Off
+          <br/>Live updates
+        </ion-label>
+        <ion-toggle checked="false" #mode></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </form>
 </ion-content>

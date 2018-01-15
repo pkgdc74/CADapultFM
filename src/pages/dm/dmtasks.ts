@@ -24,5 +24,7 @@ export class DMTasksPage {
   constructor(public navCtrl: NavController) {
 
   }
-
+  showPressed(item){
+    console.log('x')
+  }
 }
