@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+
+
 @Component({
   selector: 'dmtasks',
   templateUrl: 'dmtasks.html'
@@ -20,11 +22,15 @@ export class DMTasksPage {
     location:"Newark De",
     description:"Heater not working"
   }]
-
   constructor(public navCtrl: NavController) {
-
   }
-  showPressed(item){
-    console.log('x')
+  startWIP(wo,wip){
+    wo.started=wo.started?false:true;
+    if(wo.started){
+      wip.start();
+    }else{
+      wip.stop();
+    }
   }
+  
 }

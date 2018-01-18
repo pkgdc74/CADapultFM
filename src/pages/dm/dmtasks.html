@@ -1,46 +1,51 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center>DM Tasks <ion-badge item-top>260k</ion-badge></ion-title>
+    <ion-title text-center>DM Tasks
+      <ion-badge item-top>260k</ion-badge>
+    </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
-    <ion-fab bottom right >
-        <button ion-fab mini><ion-icon name="add"></ion-icon></button>
-        
-      </ion-fab>
-    <ion-list>
-        <ion-list-header>
-          Active Work Orders
-        </ion-list-header>
-    
-        <ion-item-sliding>
-          <ion-item (press)="showPressed(item)">
-            <ion-avatar item-start>
-              <img src="assets/img/venkman.jpg">
-            </ion-avatar>
-            <h2>Venkman</h2>
-            <p>Back off man, I'm a scientist.</p>
-          </ion-item>
-          <ion-item-options>
-            <button ion-button color="light" icon-start>
-              <ion-icon name="ios-more"></ion-icon>
-              More
-            </button>
-            <button ion-button color="primary" icon-start>
-              <ion-icon name="text"></ion-icon>
-              Text
-            </button>
-            <button ion-button color="secondary" icon-start>
-              <ion-icon name="call"></ion-icon>
-              Call
-            </button>
-          </ion-item-options>
-        </ion-item-sliding>
-    
-    
-        
-    
-      </ion-list>
-    
+  <ion-fab bottom right>
+    <button ion-fab mini>
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-list>
+    <ion-list-header>
+      Active Work Orders
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let wo of wos">
+      <ion-item>
+        <h1>00000{{wo.woid}}</h1>
+        <h2>Test location</h2>
+        <h3>Test location</h3>
+        <p items-start text-wrap>Very large textVery large textVery large textVery large text</p>
+        <p item-end>
+            5:40pm
+            <br/>
+            <wip #wip></wip>
+        </p>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="light" icon-start (click)="startWIP(wo,wip)">
+          <ion-icon name="ios-clock-outline" isActive="{{wo?.started}}"></ion-icon>
+          WIP
+        </button>
+        <button ion-button color="primary" icon-start>
+          <ion-icon name="text"></ion-icon>
+          Text
+        </button>
+        <button ion-button color="secondary" icon-start>
+          <ion-icon name="call"></ion-icon>
+          Call
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+
+
+
+  </ion-list>
+
 </ion-content>
