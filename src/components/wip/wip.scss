@@ -1,12 +1,10 @@
 wip {
     .digit{
-        background: rgb(65, 65, 61);
         color: rgb(255, 255, 255);
-        padding: 2pt
-    }
-    .ib{
+        padding: 2pt;
         display:inline-block;text-align:center;
-        box-shadow: inset 0px 0px 40px 40px rgb(63, 63, 60);
+        background-color: #746f6f;
+        box-shadow: 2px 2px 5px #aaaaaa;
         border-radius: 5px;
     }
 }

@@ -13,7 +13,8 @@ export class DMTasksPage {
     reqtype:"Electrical",
     reqopt:"Heater",
     location:"Newark De",
-    description:"Heater not working"
+    description:"Heater not working",
+    startTime:new Date("1/10/2018").getTime()
   },
   {
     woid:2,
@@ -24,13 +25,17 @@ export class DMTasksPage {
   }]
   constructor(public navCtrl: NavController) {
   }
-  startWIP(wo,wip){
-    wo.started=wo.started?false:true;
-    if(wo.started){
-      wip.start();
+  toggleWip(wo){
+    wo.wips=wo.wips||[]
+    wo.startTime=wo.startTime||0
+    if(wo.startTime>0){
+      wo.wips.push({"st":wo.startTime,"et":new Date().getTime()})
+      wo.startTime=0;
+      wo.labor=wo.wips.reduce((s,x)=>{return s+(x.et-x.st)},0)
     }else{
-      wip.stop();
+      wo.startTime=new Date().getTime()
     }
   }
-  
 }
+
+

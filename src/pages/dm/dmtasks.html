@@ -5,7 +5,7 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content padding>
   <ion-fab bottom right>
     <button ion-fab mini>
       <ion-icon name="add"></ion-icon>
@@ -17,19 +17,60 @@
     </ion-list-header>
     <ion-item-sliding *ngFor="let wo of wos">
       <ion-item>
+          <ion-grid>
+              <ion-row >
+                <ion-col>
+                  000000{{wo.id}}
+                </ion-col>
+                <ion-col>
+                    <span *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</span> <wip #wip [startTime]="wo?.startTime"></wip>
+                </ion-col>
+                <ion-col text-right>
+                  <p ion-note >
+                      1/1/2018 <br/>
+                  </p>
+                   
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col text-wrap>
+                      very long text very long textvery long text very long textvery long text very long textvery long text very long text
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+      </ion-item>
+      <ion-item-options>
+          <button ion-button color="light" icon-start (click)="toggleWip(wo)">
+            <ion-icon name="ios-clock-outline"></ion-icon>
+            WIP
+          </button>
+          <button ion-button color="primary" icon-start>
+            <ion-icon name="text"></ion-icon>
+            Text
+          </button>
+          <button ion-button color="secondary" icon-start>
+            <ion-icon name="call"></ion-icon>
+            Call
+          </button>
+        </ion-item-options>
+    </ion-item-sliding>
+    <ion-item-sliding *ngFor="let wo of wos">
+      <ion-item>
         <h1>00000{{wo.woid}}</h1>
         <h2>Test location</h2>
         <h3>Test location</h3>
         <p items-start text-wrap>Very large textVery large textVery large textVery large text</p>
-        <p item-end>
+        <ion-note item-end>
             5:40pm
             <br/>
-            <wip #wip></wip>
-        </p>
+            <p *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</p>
+            <wip #wip [startTime]="wo?.startTime"></wip>
+        </ion-note>
+
       </ion-item>
       <ion-item-options>
-        <button ion-button color="light" icon-start (click)="startWIP(wo,wip)">
-          <ion-icon name="ios-clock-outline" isActive="{{wo?.started}}"></ion-icon>
+        <button ion-button color="light" icon-start (click)="toggleWip(wo)">
+          <ion-icon name="ios-clock-outline"></ion-icon>
           WIP
         </button>
         <button ion-button color="primary" icon-start>
@@ -42,10 +83,5 @@
         </button>
       </ion-item-options>
     </ion-item-sliding>
-
-
-
-
   </ion-list>
-
 </ion-content>

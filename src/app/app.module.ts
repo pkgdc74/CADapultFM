@@ -12,6 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { RmiService } from '../providers/rmi-service/rmi-service';
 import { ComponentsModule } from '../components/components.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ComponentsModule } from '../components/components.module';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),ComponentsModule
+    IonicModule.forRoot(MyApp),ComponentsModule,
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
