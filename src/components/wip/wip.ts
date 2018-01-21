@@ -15,7 +15,6 @@ export class WipComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    console.log(1)
     if (this.st > 0)
       this.start();
     else
@@ -32,5 +31,6 @@ export class WipComponent implements OnChanges {
   stop() {
     clearInterval(this.clear)
     this.st = 0;
+    this.diff = 0;
   }
 }
