@@ -70,8 +70,6 @@ var EventAdapter = function (e) {
         var delta = 0;
         if (e.wheelDelta) {
             delta = e.wheelDelta / 120;
-            if (window.opera)
-                delta = -delta;
         } else {
             delta = -e.deltaY / 3;
         }
