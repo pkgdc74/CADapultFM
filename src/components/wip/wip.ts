@@ -1,10 +1,10 @@
-import { Component, DoCheck, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 
 @Component({
   selector: 'wip',
   templateUrl: 'wip.html'
 })
-export class WipComponent implements DoCheck {
+export class WipComponent implements OnChanges {
   private diff: number = 0
   private clear
 
@@ -14,7 +14,8 @@ export class WipComponent implements DoCheck {
   constructor() {
   }
 
-  ngDoCheck() {
+  ngOnChanges() {
+    console.log(1)
     if (this.st > 0)
       this.start();
     else

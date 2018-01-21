@@ -21,6 +21,8 @@ export class SignatureCompnenet {
 
         let ea = new ElementAdapter(el)
         let move = (e) => {
+            e.preventDefault();
+            e.stopPropagation()
             let evt = new EventAdapter(e);
             evt.setOffset(ea.offset())
             let pt = evt.getPoint()
@@ -30,6 +32,8 @@ export class SignatureCompnenet {
             y = pt.y;
         }
         let start = (e) => {
+            e.preventDefault();
+            e.stopPropagation()
             let evt = new EventAdapter(e);
             evt.setOffset(ea.offset())
             let pt = evt.getPoint()
