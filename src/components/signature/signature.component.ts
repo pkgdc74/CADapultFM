@@ -1,4 +1,4 @@
-import { Component, Renderer2, ViewChild, Output, EventEmitter } from "@angular/core";
+import { Component, ViewChild, Output, EventEmitter } from "@angular/core";
 
 @Component({
     selector: "signature",
@@ -43,7 +43,7 @@ export class SignatureCompnenet {
             el.addEventListener('touchmove', move)
             el.addEventListener('mousemove', move)
         }
-        let isTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+        let isTouch = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
         if (isTouch) {
             el.addEventListener('touchstart', start);
             el.addEventListener('touchend', (e) => {
