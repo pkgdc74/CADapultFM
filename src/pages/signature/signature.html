@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>Signature</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-card *ngIf="dataUrl==''" #card>
+    <signature></signature>
+    <ion-card-content>
+      <ion-card-title>
+        Please sign
+      </ion-card-title>
+      <button ion-button color="primary" (click)="clear()">Clear</button>
+      <button ion-button color="primary" (click)="accept()">Accept</button>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="dataUrl!!=''">
+    <img *ngIf="dataUrl!=''" [src]="dataUrl"/>
+    <ion-card-content>
+      <button ion-button color="primary" (click)="close()" block>Close</button>
+    </ion-card-content>
+  </ion-card>
+  
+</ion-content>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-
-
+import { NavController, ModalController} from 'ionic-angular';
+import { SignaturePage } from '../signature/signature';
+import { Modal } from 'ionic-angular/components/modal/modal';
 
 @Component({
   selector: 'dmtasks',
@@ -14,7 +14,7 @@ export class DMTasksPage {
     reqopt:"Heater",
     location:"Newark De",
     description:"Heater not working",
-    startTime:new Date("1/10/2018").getTime()
+    startTime:new Date("1/21/2018").getTime()
   },
   {
     woid:2,
@@ -23,7 +23,7 @@ export class DMTasksPage {
     location:"Newark De",
     description:"Heater not working"
   }]
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,private modalCtrl:ModalController) {
   }
   toggleWip(wo){
     wo.wips=wo.wips||[]
@@ -35,6 +35,14 @@ export class DMTasksPage {
     }else{
       wo.startTime=new Date().getTime()
     }
+  }
+  closeWO(wo){
+    let m:Modal=this.modalCtrl.create(SignaturePage,{du:wo.signature||""})
+    m.onDidDismiss((d)=>{
+      if(!wo.signature)
+        wo.signature=d;
+    })
+    m.present()   
   }
 }
 

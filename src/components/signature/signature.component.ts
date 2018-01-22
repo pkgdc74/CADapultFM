@@ -1,4 +1,5 @@
-import { Component, ViewChild, Output, EventEmitter } from "@angular/core";
+import { Component, ViewChild, ElementRef, Input } from "@angular/core";
+
 
 @Component({
     selector: "signature",
@@ -6,9 +7,10 @@ import { Component, ViewChild, Output, EventEmitter } from "@angular/core";
 })
 export class SignatureCompnenet {
     @ViewChild("canvas") canvas;
-    constructor() {
+
+    constructor(private el: ElementRef) {
     }
-    reset() {
+    clear() {
         var el = this.canvas.nativeElement;
         var g2d = el.getContext("2d");
         g2d.clearRect(0, 0, el.width, el.height)
@@ -16,9 +18,7 @@ export class SignatureCompnenet {
     ngAfterViewInit() {
         var el = this.canvas.nativeElement;
         var g2d = el.getContext("2d");
-        g2d.fillText("Hello world", 10, 40);
         let x: number, y: number;
-
         let ea = new ElementAdapter(el)
         let move = (e) => {
             e.preventDefault();
@@ -60,10 +60,9 @@ export class SignatureCompnenet {
             })
         }
     }
-    evt: EventEmitter<string> = new EventEmitter<string>();
-    @Output("save")
-    save() {
-        this.evt.emit("test")
+
+    dataUrl() {
+        return this.canvas.nativeElement.toDataURL()
     }
 
 }

@@ -13,33 +13,27 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { RmiService } from '../providers/rmi-service/rmi-service';
 import { ComponentsModule } from '../components/components.module';
 import { PipesModule } from '../pipes/pipes.module';
+import { SignaturePage } from '../pages/signature/signature';
+
 
 @NgModule({
   declarations: [
-    MyApp,
-    PMTasksPage,
-    SettingsPage,
-    DMTasksPage,
-    TabsPage
+    MyApp, PMTasksPage, SettingsPage, DMTasksPage, TabsPage, SignaturePage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),ComponentsModule,
+    IonicModule.forRoot(MyApp), ComponentsModule,
     PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    PMTasksPage,
-    SettingsPage,
-    DMTasksPage,
-    TabsPage
+    MyApp, PMTasksPage, SettingsPage, DMTasksPage, TabsPage, SignaturePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     RmiService
   ]
 })
-export class AppModule {}
+export class AppModule { }

@@ -6,7 +6,6 @@
   </ion-navbar>
 </ion-header>
 <ion-content no-padding>
-  <signature></signature>
   <ion-fab bottom right>
     <button ion-fab mini>
       <ion-icon name="add"></ion-icon>
@@ -17,31 +16,31 @@
       Active Work Orders
     </ion-list-header>
     <ion-item-sliding *ngFor="let wo of wos">
-      <ion-item>
-        <h1>00000{{wo.woid}}</h1>
-        <h2>Test location</h2>
-        <h3>Test location</h3>
-        <p items-start text-wrap>Very large textVery large textVery large textVery large text</p>
-        <ion-note item-end>
-            5:40pm
-            <br/>
+      <ion-item no-lines class="bottom-border">
+        <ion-row>
+          <ion-col><h1>00000{{wo.woid}}</h1></ion-col>
+          <ion-col>
             <p *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</p>
             <wip #wip [startTime]="wo?.startTime"></wip>
-        </ion-note>
-
+          </ion-col>
+          <ion-col text-right>1/20/2018</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h2>Test location</h2>
+            <h3>Test location</h3>
+            <p items-start text-wrap>Very large textVery large textVery large textVery large text</p>
+          </ion-col>
+        </ion-row>
       </ion-item>
       <ion-item-options>
         <button ion-button color="light" icon-start (click)="toggleWip(wo)">
           <ion-icon name="ios-clock-outline"></ion-icon>
           WIP
         </button>
-        <button ion-button color="primary" icon-start>
-          <ion-icon name="text"></ion-icon>
-          Text
-        </button>
-        <button ion-button color="secondary" icon-start>
-          <ion-icon name="call"></ion-icon>
-          Call
+        <button ion-button color="light" icon-start (click)="closeWO(wo)">
+          <ion-icon name="md-checkmark-circle-outline"></ion-icon>
+          Close
         </button>
       </ion-item-options>
     </ion-item-sliding>
