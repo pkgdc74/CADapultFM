@@ -1,5 +1,5 @@
-import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { SignatureCompnenet } from '../../components/signature/signature.component';
 
 
@@ -10,19 +10,20 @@ import { SignatureCompnenet } from '../../components/signature/signature.compone
 export class SignaturePage {
   @ViewChild(SignatureCompnenet)
   sigComp
-  dataUrl:string=""
+  dataUrl: string = ""
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
-    this.dataUrl=this.navParams.get("du")
+    this.dataUrl = this.navParams.get("du")
   }
 
-  accept(){
-    this.dataUrl=this.sigComp.dataUrl()
+  accept() {
+    this.dataUrl = this.sigComp.dataUrl()
+    console.log(this.dataUrl)
     this.viewCtrl.dismiss(this.dataUrl)
   }
-  clear(){
+  clear() {
     this.sigComp.clear();
   }
-  close(){
+  close() {
     this.viewCtrl.dismiss()
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 
 
 @Component({
@@ -8,7 +8,7 @@ import { Component, ViewChild, ElementRef, Input } from "@angular/core";
 export class SignatureCompnenet {
     @ViewChild("canvas") canvas;
 
-    constructor(private el: ElementRef) {
+    constructor() {
     }
     clear() {
         var el = this.canvas.nativeElement;
