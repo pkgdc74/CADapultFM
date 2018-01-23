@@ -12,13 +12,13 @@ export class TabsPage {
   tab1Root = DMTasksPage;
   tab2Root = PMTasksPage;
   tab3Root = SettingsPage;
-  constructor() {  
-    
+  constructor() {
+
   }
 
   @ViewChild('myTabs') tabRef: Tabs;
 
-ionViewDidEnter() {
-  
- }
+  ionViewDidEnter() {
+
+  }
 }

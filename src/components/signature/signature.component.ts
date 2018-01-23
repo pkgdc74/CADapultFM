@@ -11,13 +11,19 @@ export class SignatureCompnenet {
     constructor() {
     }
     clear() {
+        this.minP = new Point(Number.MAX_VALUE,Number.MAX_VALUE);
+        this.maxP = new Point(Number.MIN_VALUE,Number.MIN_VALUE);
         var el = this.canvas.nativeElement;
         var g2d = el.getContext("2d");
         g2d.clearRect(0, 0, el.width, el.height)
     }
+    minP = new Point(Number.MAX_VALUE,Number.MAX_VALUE);
+    maxP = new Point(Number.MIN_VALUE,Number.MIN_VALUE);
+    
     ngAfterViewInit() {
         var el = this.canvas.nativeElement;
         var g2d = el.getContext("2d");
+        g2d.clearRect(0, 0, el.width, el.height)
         let x: number, y: number;
         let ea = new ElementAdapter(el)
         let move = (e) => {
@@ -30,6 +36,15 @@ export class SignatureCompnenet {
             g2d.stroke()
             x = pt.x;
             y = pt.y;
+            if (x < this.minP.x)
+                this.minP.x = x
+            if (y < this.minP.y)
+                this.minP.y = y
+            if (x > this.maxP.x)
+                this.maxP.x = x
+            if (y > this.maxP.y)
+                this.maxP.y = y
+
         }
         let start = (e) => {
             e.preventDefault();
@@ -60,11 +75,12 @@ export class SignatureCompnenet {
             })
         }
     }
-
+    isValid(){
+        return ((this.maxP.x-this.minP.x)<40 && (this.maxP.y-this.minP.y)<40)
+    }
     dataUrl() {
         return this.canvas.nativeElement.toDataURL()
     }
-
 }
 
 var EventAdapter = function (e) {
@@ -108,25 +124,25 @@ var ElementAdapter = function (e) {
     }
 }
 var Point = function (x, y) {
-    this.x = x = x || 0, this.y = y = y || 0;
+    this.x = x || 0, this.y = y || 0;
     this.getX = function () {
-        return x;
+        return this.x;
     }
     this.getY = function () {
-        return y;
+        return this.y;
     }
     this.toString = function () {
-        return "x: " + x + ", y: " + y;
+        return "x: " + this.x + ", y: " + this.y;
     }
     this.setLocation = function (a, b) {
         this.x = x = a;
         this.y = y = b;
     }
     this.clone = function () {
-        return new Point(x, y)
+        return new Point(this.x, this.y)
     }
     this.equals = function (p) {
         if (!p) return;
-        return (x == p.x && y == p.y)
+        return (this.x == p.x && this.y == p.y)
     }
 }

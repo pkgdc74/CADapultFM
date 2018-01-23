@@ -37,6 +37,9 @@ export class DMTasksPage {
     }
   }
   closeWO(wo){
+   
+  }
+  signWO(wo){
     let m:Modal=this.modalCtrl.create(SignaturePage,{du:wo.signature||""})
     m.onDidDismiss((d)=>{
       if(!wo.signature)

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController,ToastController } from 'ionic-angular';
 import { SignatureCompnenet } from '../../components/signature/signature.component';
 
 
@@ -11,13 +11,20 @@ export class SignaturePage {
   @ViewChild(SignatureCompnenet)
   sigComp
   dataUrl: string = ""
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController,private toastCtrl:ToastController) {
     this.dataUrl = this.navParams.get("du")
   }
-
+ 
   accept() {
+    if(this.sigComp.isValid()){
+      let toast = this.toastCtrl.create({
+        message: 'Signature required',
+        duration: 3000
+      });
+      toast.present()
+      return
+    }
     this.dataUrl = this.sigComp.dataUrl()
-    console.log(this.dataUrl)
     this.viewCtrl.dismiss(this.dataUrl)
   }
   clear() {
