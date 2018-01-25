@@ -1,7 +1,7 @@
 /**
  * Developer: Praveen Gupta
  */
-var XHR = function (url) {
+XHR = function (url) {
     alert(window.location)
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
