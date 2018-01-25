@@ -3,6 +3,13 @@ import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
 
 declare var cfm, md5;
+declare global {
+  interface String {
+    d() : string;
+    e() : string;
+    x() : string;
+  }
+}
 
 export interface ConnectionInfo {
   url: string,
