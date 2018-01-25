@@ -29,7 +29,7 @@ export class SettingsPage {
   }
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
     try{
-      XHR()
+      XHR.XHR()
     }catch(err){
       alert(err)
     }

@@ -1,16 +1,18 @@
 /**
  * Developer: Praveen Gupta
  */
-XHR = function (url) {
-    alert(window.location)
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            alert(xhttp.responseText)
-        }
-    };
-    xhttp.open("GET", "https://www.cadapultfm.com/fmcloudbeta/invpmdm/mobile/test.html", true);
-    xhttp.send();
+var XHR = new function (url) {
+    this.XHR = function () {
+        alert(window.location)
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(xhttp.responseText)
+            }
+        };
+        xhttp.open("GET", "https://www.cadapultfm.com/fmcloudbeta/invpmdm/mobile/test.html", true);
+        xhttp.send();
+    }
 }
 var util = {}
 util.getVarType = function (data) {
