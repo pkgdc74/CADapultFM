@@ -28,7 +28,12 @@ export class SettingsPage {
     url: "https://www.cadapultfm.com/fmcloud", cid: "FMDemo", userid: "praveeng", password: "xx"
   }
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
-    XHR()
+    try{
+      XHR()
+    }catch(err){
+      alert(err)
+    }
+    
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
