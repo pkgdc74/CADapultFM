@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
 
-declare var cfm, md5;
+declare var cfm, md5, XHR;
 declare global {
   interface String {
     d() : string;
@@ -28,6 +28,7 @@ export class SettingsPage {
     url: "https://www.cadapultfm.com/fmcloud", cid: "FMDemo", userid: "praveeng", password: "xx"
   }
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
+    XHR()
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
