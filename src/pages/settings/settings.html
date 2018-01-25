@@ -30,7 +30,7 @@
         <ion-input type="password" name="password" [(ngModel)]="conInfo.password" required></ion-input>
       </ion-item>
       <ion-item>
-        <button ion-button block [disabled]="!form.valid">Connect</button>
+        <button ion-button block [disabled]="!form.valid" (click)="connect()">Connect</button>
       </ion-item>
       <ion-item>
         <ion-label *ngIf="mode.checked" color="danger">
@@ -41,7 +41,7 @@
           Work offline mode: Off
           <br/>Live updates
         </ion-label>
-        <ion-toggle checked="false" (ionChange)="showMessage(item)" #mode></ion-toggle>
+        <ion-toggle checked="false" (ionChange)="toggleMode(mode.checked)" #mode></ion-toggle>
       </ion-item>
       
     </ion-list>
