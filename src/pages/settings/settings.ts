@@ -25,7 +25,7 @@ export interface ConnectionInfo {
 
 export class SettingsPage {
   conInfo: ConnectionInfo = {
-    url: "https://cadapultfm1.cadapult.local/fmcloudbeta", cid: "FMDev", userid: "", password: ""
+    url: "https://www.cadapultfm.com/fmcloud", cid: "FMDemo", userid: "praveeng", password: "xx"
   }
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
     ds.get("connectionSetting").then((x) => {
