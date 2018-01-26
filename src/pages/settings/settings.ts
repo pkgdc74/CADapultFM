@@ -3,6 +3,7 @@ import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
 
 declare var cfm: any;
+declare var md5: any;
 
 export interface ConnectionInfo {
   url: string,
@@ -22,31 +23,13 @@ export class SettingsPage {
   }
 
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
-    alert(cfm)
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
-      //this.conInfo.password = this.conInfo.password.d()
+      this.conInfo.password = this.conInfo.password.d()
     })
   }
 
-
-  connect() {
-    let options = { message: "", duration: 3000 };
-    var rmis = new cfm.rmi.RMIService()
-    rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid })
-    rmis.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${this.conInfo.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
-      .then((proxy) => {
-        alert("inproxy")
-        proxy.testConnectionAsync().then((x) => {
-          alert("in test connection")
-        })
-      })
-  }
-
-
-
-  /*
      connect() {
        let options = { message: "", duration: 3000 };
       var rmis = new cfm.rmi.RMIService()
@@ -71,8 +54,7 @@ export class SettingsPage {
           this.toastCtrl.create(options).present()
         }) 
     }
-  
-    
+     
     process(pass: string): string {
       let password: any = new Date().getTime() + 10000;
       password = password + "-" + md5(password + "" + pass);
@@ -83,7 +65,7 @@ export class SettingsPage {
       let time = x.split("-")
       if (new Date().getTime() > Number(time[0])) return false;
       return md5(time[0] + pass) == time[1]
-    }  */
+    }  
 
   toggleMode(i) {
 
