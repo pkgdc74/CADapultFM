@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
 
-import * as u from "../../assets/js/test";
+import * as cfm from "../../assets/js/rmiservicex";
 
 export interface ConnectionInfo {
   url: string,
@@ -22,7 +22,7 @@ export class SettingsPage {
   }
 
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
-    alert(u.xxx)
+    alert(cfm.rmi)
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;

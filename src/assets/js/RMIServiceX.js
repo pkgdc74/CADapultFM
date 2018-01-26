@@ -5,7 +5,8 @@
 ; (function (root) {
 
 
-    root.rmi.RMIService = function () {
+    var rmi={}
+    rmi.RMIService = function () {
         var url = util.applicationBaseURL() + "fmcommon/lib_server/RMIServiceBroker.asp";
         var proxyCache = {};
         var parseToRecordSet = function (data) {
@@ -20,7 +21,7 @@
                     rows[i][rs.blobs[j]] = ds.readInt8Array(len);
                 }
             }
-            return new root.rmi.RecordSet(rs);
+            return new rmi.RecordSet(rs);
         }
         function str2ab(str) {
             var buf = new ArrayBuffer(str.length);
@@ -308,7 +309,7 @@
             var res = {}
             res.status = -1
             settings = settings || {};
-            var promise = new root.rmi.Promise();
+            var promise = new rmi.Promise();
             ajax.onreadystatechange = function () {
                 if (ajax.readyState == 4) {
                     if (ajax.status == 200 || ajax.status == 400) {
@@ -342,7 +343,7 @@
                 return proxyCache[name]
             var rxIsURL = /^(http|https):\/\//i;
             var proxy = {}
-            var promise = new root.rmi.Promise();
+            var promise = new rmi.Promise();
             if (u) {
                 promise.resolve(u)
             } else {
@@ -385,10 +386,10 @@
             })
         }
     }
-    root.rmi.RMIService.getProxy = function (cls, u) {
-        return new root.rmi.RMIService().getProxy(cls, u)
+    rmi.RMIService.getProxy = function (cls, u) {
+        return new rmi.RMIService().getProxy(cls, u)
     }
-    root.rmi.Promise = function () {
+    rmi.Promise = function () {
         var status = -1, value, listeners = [], me = this;
         this.resolve = function (v) {
             if (status > -1) return;
@@ -410,7 +411,7 @@
                     try {
                         if (status === 0) {
                             x = l.resolved(value);
-                            if (x && x instanceof root.rmi.Promise) {
+                            if (x && x instanceof rmi.Promise) {
                                 x.then(function (z) {
                                     l.promise.resolve(z);
                                 });
@@ -419,7 +420,7 @@
                             }
                         } else {
                             x = l.rejected(value);
-                            if (x && x instanceof root.rmi.Promise) {
+                            if (x && x instanceof rmi.Promise) {
                                 x.then(function (z) {
                                     l.promise.reject(z);
                                 });
@@ -431,8 +432,8 @@
                         x = l.rejected(err);
                         l.promise.reject(x || err);
                     }
-                    if (root.rmi.Promise.scope)
-                        root.rmi.Promise.scope.$applyAsync();
+                    if (rmi.Promise.scope)
+                        rmi.Promise.scope.$applyAsync();
                 }, 0);
             });
             listeners = [];
@@ -449,15 +450,15 @@
             } else {
                 return me
             }
-            x.promise = new root.rmi.Promise();
+            x.promise = new rmi.Promise();
             listeners.push(x);
             notify();
             return x.promise;
         };
     };
-    root.rmi.Promise.all = function (arr) {
+    rmi.Promise.all = function (arr) {
         if (util.getVarType(arr) !== "array" || arr.length === 0) throw new Error("Non empty array expected");
-        var p = new root.rmi.Promise();
+        var p = new rmi.Promise();
         var results = [], completed = 0, errored = false;
         arr.map(function (e, i) {
             var proc = function (x) {
@@ -468,11 +469,11 @@
                     proc = function () { };
                 } else if (arr.length === completed) {
                     p.resolve(results);
-                    if (root.rmi.Promise.scope)
-                        root.rmi.Promise.scope.$applyAsync();
+                    if (rmi.Promise.scope)
+                        rmi.Promise.scope.$applyAsync();
                 }
             };
-            if (e instanceof root.rmi.Promise) {
+            if (e instanceof rmi.Promise) {
                 e.then(function (x) {
                     proc(x);
                 }, function (x) {
@@ -485,7 +486,7 @@
         });
         return p;
     };
-    root.rmi.RecordSet = function (data) {
+    rmi.RecordSet = function (data) {
         var records = data.records;
         var fieldsMap = {};
         var init = function () {
@@ -517,4 +518,5 @@
             }
         }
     }
-}(typeof exports === 'undefined' ? this.cfm={rmi:{}} : exports));
+    root.rmi=rmi;
+}(typeof exports === 'undefined' ? this : exports));
