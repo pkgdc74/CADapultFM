@@ -1,4 +1,1 @@
-
-(function(g){
-    g.xxx="praveengupta"
-})(this);
+xxx="praveengupta"
