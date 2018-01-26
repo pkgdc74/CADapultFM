@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
-
+declare var testvar
 declare var cfm, md5, XHR;
 declare global {
   interface String {
@@ -28,6 +28,11 @@ export class SettingsPage {
     url: "https://www.cadapultfm.com/fmcloud", cid: "FMDemo", userid: "praveeng", password: "xx"
   }
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
+    try{
+      alert(testvar)
+    }catch(err){
+      alert(testvar)
+    }
     try{
       XHR.XHR()
     }catch(err){

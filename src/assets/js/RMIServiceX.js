@@ -1,6 +1,7 @@
 /**
  * Developer: Praveen Gupta
  */
+var testvar="praveen"
 var XHR = new function (url) {
     this.XHR = function () {
         alert(window.location)
@@ -14,6 +15,7 @@ var XHR = new function (url) {
         xhttp.send();
     }
 }
+
 var util = {}
 util.getVarType = function (data) {
     if (undefined === data) { return 'undefined'; }
