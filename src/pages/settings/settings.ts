@@ -34,8 +34,11 @@ export class SettingsPage {
     }catch(err){
       alert(err)
     }
-
-
+    try{
+      alert("prave".e())
+    }catch(err){
+      alert(err)
+    }
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
@@ -55,7 +58,7 @@ export class SettingsPage {
     xhttp.send();
   }
 
-  connect() {
+/*   connect() {
     let options = { message: "", duration: 3000 };
     var rmis = new cfm.rmi.RMIService()
     rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid, password: this.process(this.conInfo.password) })
@@ -90,7 +93,7 @@ export class SettingsPage {
     let time = x.split("-")
     if (new Date().getTime() > Number(time[0])) return false;
     return md5(time[0] + pass) == time[1]
-  }
+  } */
 
   toggleMode(i) {
 
