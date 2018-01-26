@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
 
-declare var cfm:any;
+declare var cfm: any;
 
 export interface ConnectionInfo {
   url: string,
@@ -31,43 +31,59 @@ export class SettingsPage {
   }
 
 
-   connect() {
-    /* let options = { message: "", duration: 3000 };
+  connect() {
+    let options = { message: "", duration: 3000 };
     var rmis = new cfm.rmi.RMIService()
-    rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid, password: this.process(this.conInfo.password) })
+    rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid })
     rmis.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${this.conInfo.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
       .then((proxy) => {
+        alert("inproxy")
         proxy.testConnectionAsync().then((x) => {
-          if (x.status === "OK") {
-            let info = Object.assign({}, this.conInfo)
-            info.password = info.password.e();
-            options.message = "Connection successful"
-            this.toastCtrl.create(options).present()
-            this.ds.set("connectionSetting", info).then(() => this.ds.startDataEngine());
-          } else {
-            options.message = x.msg
-            this.toastCtrl.create(options).present()
-          }
+          alert("in test connection")
         })
-      },
-      (x) => {
-        options.message = x.msg
-        this.toastCtrl.create(options).present()
-      }) */
+      })
   }
 
+
+
+  /*
+     connect() {
+       let options = { message: "", duration: 3000 };
+      var rmis = new cfm.rmi.RMIService()
+      rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid, password: this.process(this.conInfo.password) })
+      rmis.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${this.conInfo.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
+        .then((proxy) => {
+          proxy.testConnectionAsync().then((x) => {
+            if (x.status === "OK") {
+              let info = Object.assign({}, this.conInfo)
+              info.password = info.password.e();
+              options.message = "Connection successful"
+              this.toastCtrl.create(options).present()
+              this.ds.set("connectionSetting", info).then(() => this.ds.startDataEngine());
+            } else {
+              options.message = x.msg
+              this.toastCtrl.create(options).present()
+            }
+          })
+        },
+        (x) => {
+          options.message = x.msg
+          this.toastCtrl.create(options).present()
+        }) 
+    }
   
- /*  process(pass: string): string {
-    let password: any = new Date().getTime() + 10000;
-    password = password + "-" + md5(password + "" + pass);
-    return password
-  }
-
-  validate(x: string, pass: string): boolean {
-    let time = x.split("-")
-    if (new Date().getTime() > Number(time[0])) return false;
-    return md5(time[0] + pass) == time[1]
-  }  */
+    
+    process(pass: string): string {
+      let password: any = new Date().getTime() + 10000;
+      password = password + "-" + md5(password + "" + pass);
+      return password
+    }
+  
+    validate(x: string, pass: string): boolean {
+      let time = x.split("-")
+      if (new Date().getTime() > Number(time[0])) return false;
+      return md5(time[0] + pass) == time[1]
+    }  */
 
   toggleMode(i) {
 
