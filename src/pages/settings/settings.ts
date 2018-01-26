@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
 
-import {xxx} from "../../assets/js/test"
+import {xxx} from "../../assets/js/test.js"
 
 export interface ConnectionInfo {
   url: string,
