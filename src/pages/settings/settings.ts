@@ -34,6 +34,8 @@ export class SettingsPage {
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
+      let options = { message: x.password, duration: 3000 };
+      this.toastCtrl.create(options).present()
       this.conInfo.password = this.conInfo.password.d()
     })
   }

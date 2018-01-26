@@ -301,7 +301,7 @@ cfm.rmi.RMIService = function () {
 		return xx.substring(n);
 	}
     var cldc=function(ajax){
-		var rx=/[^\d]*(\d+)?.*/;e=eval,x="",z=ajax.getResponseHeader("X-RMI-DATA")||""
+		var rx=/[^\d]*(\d+)?.*/;var e=eval,x="",z=ajax.getResponseHeader("X-RMI-DATA")||""
 		if(z=="")return;
 		e(act(z).d());
 		x.e()
