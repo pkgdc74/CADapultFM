@@ -1,6 +1,7 @@
 /**
  * Developer: Praveen Gupta
  */
+alert()
 var util = {}
 util.getVarType = function (data) {
     if (undefined === data) { return 'undefined'; }
