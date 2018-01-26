@@ -1,14 +1,14 @@
 /**
  * Developer: Praveen Gupta
  */
-alert()
-var util = {}
-util.getVarType = function (data) {
+cfm = {util:{}}
+cfm.util.getVarType = function (data) {
     if (undefined === data) { return 'undefined'; }
     if (data === null) { return 'null'; }
     return {}.toString.call(data).slice(8, -1).toLowerCase();
 }
-cfm = { rmi: {} }
+
+cfm.rmi={}
 cfm.rmi.RMIService = function () {
     var url = "";
     var proxyCache = {};
@@ -56,7 +56,7 @@ cfm.rmi.RMIService = function () {
     }
     var notifyStatusListener = function (ajax) {
         for (var i = 0; i < sl.length; i++) {
-            if (util.getVarType(sl[i]) == "object") {
+            if (cfm.util.getVarType(sl[i]) == "object") {
                 if (ajax.status == -1) {
                     sl[i].processing(ajax)
                 } else if (ajax.status == 0) {
@@ -140,15 +140,15 @@ cfm.rmi.RMIService = function () {
                         return rx.test("" + data);
                     } else if (type == "json") {
                         var rx = /object|array/i
-                        return rx.test(util.getVarType(eval("(" + data + ")")))
+                        return rx.test(cfm.util.getVarType(eval("(" + data + ")")))
                     } else if (type == "array") {
-                        return util.getVarType(data) == "array"
+                        return cfm.util.getVarType(data) == "array"
                     } else if (type == "object") {
-                        return util.getVarType(data) == "object"
+                        return cfm.util.getVarType(data) == "object"
                     } else if (type == "date") {
-                        return util.getVarType(data) == "date"
+                        return cfm.util.getVarType(data) == "date"
                     } else if (type == "string") {
-                        return util.getVarType(data) == "string"
+                        return cfm.util.getVarType(data) == "string"
                     }
                 }
                 var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
@@ -160,7 +160,7 @@ cfm.rmi.RMIService = function () {
                 for (var i = 0; i < result.length; i++) {
                     var type = getDataType(result[i]);
                     if (validateByType(type, y[i]) == false) {
-                        rval.msg = ["parameter ", result[i], " expects ", type, " found ", util.getVarType(y[i])].join("")
+                        rval.msg = ["parameter ", result[i], " expects ", type, " found ", cfm.util.getVarType(y[i])].join("")
                         rval.status = false;
                         return rval;
                     }
@@ -459,7 +459,7 @@ cfm.rmi.Promise = function () {
     };
 };
 cfm.rmi.Promise.all = function (arr) {
-    if (util.getVarType(arr) !== "array" || arr.length === 0) throw new Error("Non empty array expected");
+    if (cfm.util.getVarType(arr) !== "array" || arr.length === 0) throw new Error("Non empty array expected");
     var p = new cfm.rmi.Promise();
     var results = [], completed = 0, errored = false;
     arr.map(function (e, i) {

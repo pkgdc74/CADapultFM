@@ -2,14 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
 
-declare var cfm:any;
-declare global {
-  interface String {
-    d(): string;
-    e(): string;
-    x(): string;
-  }
-}
+declare const cfm:any;
 
 export interface ConnectionInfo {
   url: string,
@@ -29,37 +22,17 @@ export class SettingsPage {
   }
 
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
-    try{
-      this.XHR()
-    }catch(err){
-      alert(err)
-    }
-    try{
-      alert("prave".e())
-    }catch(err){
-      alert(err)
-    }
+    alert(cfm)
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
-      this.conInfo.password = this.conInfo.password.d()
+      //this.conInfo.password = this.conInfo.password.d()
     })
   }
 
-  XHR() {
-    alert(window.location)
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        alert(xhttp.responseText)
-      }
-    };
-    xhttp.open("GET", "https://www.cadapultfm.com/fmcloudbeta/invpmdm/mobile/test.html", true);
-    xhttp.send();
-  }
 
-/*   connect() {
-    let options = { message: "", duration: 3000 };
+   connect() {
+    /* let options = { message: "", duration: 3000 };
     var rmis = new cfm.rmi.RMIService()
     rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid, password: this.process(this.conInfo.password) })
     rmis.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${this.conInfo.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
@@ -80,10 +53,11 @@ export class SettingsPage {
       (x) => {
         options.message = x.msg
         this.toastCtrl.create(options).present()
-      })
+      }) */
   }
 
-  process(pass: string): string {
+  
+ /*  process(pass: string): string {
     let password: any = new Date().getTime() + 10000;
     password = password + "-" + md5(password + "" + pass);
     return password
@@ -93,7 +67,7 @@ export class SettingsPage {
     let time = x.split("-")
     if (new Date().getTime() > Number(time[0])) return false;
     return md5(time[0] + pass) == time[1]
-  } */
+  }  */
 
   toggleMode(i) {
 
