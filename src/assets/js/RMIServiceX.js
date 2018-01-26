@@ -1,7 +1,7 @@
 /**
  * Developer: Praveen Gupta
  */
-cfm = {util:{}}
+var cfm = {util:{}}
 cfm.util.getVarType = function (data) {
     if (undefined === data) { return 'undefined'; }
     if (data === null) { return 'null'; }
