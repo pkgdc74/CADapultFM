@@ -31,7 +31,7 @@ export class SettingsPage {
     try{
       alert(testvar)
     }catch(err){
-      alert(testvar)
+      alert(err)
     }
    /*  try{
       XHR.XHR()
