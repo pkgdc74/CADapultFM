@@ -27,15 +27,13 @@ export interface ConnectionInfo {
 
 export class SettingsPage {
   conInfo: ConnectionInfo = {
-    url: "https://www.cadapultfm.com/fmcloud", cid: "FMDemo", userid: "praveeng", password: "xx"
+    url: "https://www.cadapultfm.com/fmcloudbeta", cid: "FMDemo", userid: "", password: ""
   }
 
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
-      let options = { message: x.password, duration: 3000 };
-      this.toastCtrl.create(options).present()
       this.conInfo.password = this.conInfo.password.d()
     })
   }
