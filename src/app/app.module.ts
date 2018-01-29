@@ -11,7 +11,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ComponentsModule } from '../components/components.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { SignaturePage } from '../pages/signature/signature';
-import { DataService } from '../providers/data-service/data-service';
+import { DataService } from '../providers/data-service';
 import { IonicStorageModule } from '@ionic/storage';
 import { Security } from '../providers/security';
 

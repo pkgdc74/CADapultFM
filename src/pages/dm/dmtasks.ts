@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 import { SignaturePage } from '../signature/signature';
 import { Modal } from 'ionic-angular/components/modal/modal';
-import { DataService } from '../../providers/data-service/data-service';
+import { DataService } from '../../providers/data-service';
 
 @Component({
   selector: 'dmtasks',
@@ -11,7 +11,7 @@ import { DataService } from '../../providers/data-service/data-service';
 export class DMTasksPage {
   wos: any[]
   constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService) {
-    this.ds.get("dm").then(d => { this.wos = d; })
+    //this.ds.get("dm").then(d => { this.wos = d; })
 
   }
   toggleWip(wo) {
@@ -37,5 +37,3 @@ export class DMTasksPage {
     m.present()
   }
 }
-
-

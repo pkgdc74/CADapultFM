@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
-import { DataService } from '../../providers/data-service/data-service';
+import { DataService } from '../../providers/data-service';
 import { global } from '@angular/core/src/util';
-import { COMPOSITION_BUFFER_MODE } from '@angular/forms/src/directives/default_value_accessor';
 import { Security } from '../../providers/security';
 
 declare var cfm:any
@@ -11,7 +10,8 @@ export interface ConnectionInfo {
   url: string,
   cid: string,
   userid: string,
-  password: string
+  password: string,
+  offline:boolean
 }
 
 @Component({
@@ -21,11 +21,11 @@ export interface ConnectionInfo {
 
 export class SettingsPage {
   conInfo: ConnectionInfo = {
-    url: "https://www.cadapultfm.com/fmcloudbeta", cid: "FMDemo", userid: "", password: ""
+    url: "https://www.cadapultfm.com/fmcloudbeta", cid: "FMDemo", userid: "", password: "",offline:false
   }
 
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController,private sec:Security) {
-    ds.get("connectionSetting").then((x) => {
+    this.ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
       this.conInfo.password = this.conInfo.password.d()
@@ -40,11 +40,9 @@ export class SettingsPage {
       .then((proxy) => {
         proxy.testConnectionAsync().then((x) => {
           if (x.status === "OK") {
-            let info = Object.assign({}, this.conInfo)
-            info.password = info.password.e();
             options.message = "Connection successful"
             this.toastCtrl.create(options).present()
-            this.ds.set("connectionSetting", info).then(() => this.ds.startDataEngine());
+            this.saveState()
           } else {
             options.message = x.msg
             this.toastCtrl.create(options).present()
@@ -57,6 +55,15 @@ export class SettingsPage {
         this.toastCtrl.create(options).present()
       })
   }
-  toggleMode(i) {
+  private saveState():Promise<any>{
+    let info = Object.assign({}, this.conInfo)
+    info.password = info.password.e();
+    return this.ds.set("connectionSetting", info).then((x)=>{
+      this.ds.appStateChanged();
+    })
+  }
+  toggleMode(flag) {
+    this.conInfo.offline=flag
+    this.saveState()
   }
 }

@@ -41,7 +41,7 @@
           Work offline mode: Off
           <br/>Live updates
         </ion-label>
-        <ion-toggle checked="false" (ionChange)="toggleMode(mode.checked)" #mode></ion-toggle>
+        <ion-toggle name="offline" [(ngModel)]="conInfo.offline" (ionChange)="toggleMode(mode.checked)" #mode></ion-toggle>
       </ion-item>
       
     </ion-list>
