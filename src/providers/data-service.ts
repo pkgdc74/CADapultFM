@@ -8,8 +8,10 @@ declare var cfm;
 
 @Injectable()
 export class DataService {
+  private publisher:BehaviorSubject<any>;
   constructor(private storage:Storage,private security:Security) {
     this.engine=Observable.timer(0,20000)
+    this.publisher=new BehaviorSubject(0)
     this.appStateChanged()
   }
   
@@ -31,6 +33,7 @@ export class DataService {
   
   appStateChanged(){
     this.get("connectionSetting").then((info)=>{
+      if(info==null)return
       if(!info.offline){
         this.subscription=this.engine.switchMap((x)=>{
           let rmi=new cfm.rmi.RMIService()
@@ -38,7 +41,7 @@ export class DataService {
           let p=rmi.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${info.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
           .then(x=>x.gettechWOAsync())
           return Observable.fromPromise(p)
-        }).subscribe(x=>console.log(x["DMTasks"]))
+        }).subscribe(x=>this.publisher.next(x))
       }else{
         this.subscription.unsubscribe();
       }

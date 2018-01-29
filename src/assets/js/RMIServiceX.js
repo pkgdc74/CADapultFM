@@ -320,7 +320,7 @@ cfm.rmi.RMIService = function () {
                 }else if(ajax.readyState == 4 && ajax.status != 200){
                     res.status = 1;
                     res.msg = ajax["responseType"] == "arraybuffer" ? (String.fromCharCode.apply(null, new Uint8Array(ajax.response))) : ajax.responseText;
-                    reject(new Error(ajax.responseText||"Wrong base URL"))
+                    reject(new Error(ajax.responseText||`Connection failed with status code ${ajax.status} . Please check Url `))
                 }else{
                     res.status=-1;
                     res.msg="working";
