@@ -13,7 +13,7 @@ import { PipesModule } from '../pipes/pipes.module';
 import { SignaturePage } from '../pages/signature/signature';
 import { DataService } from '../providers/data-service/data-service';
 import { IonicStorageModule } from '@ionic/storage';
-
+import { Security } from '../providers/security';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { IonicStorageModule } from '@ionic/storage';
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    DataService,
+    DataService,Security
   ]
 })
 export class AppModule { }

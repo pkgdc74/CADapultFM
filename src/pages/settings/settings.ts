@@ -2,16 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service/data-service';
 import { global } from '@angular/core/src/util';
+import { COMPOSITION_BUFFER_MODE } from '@angular/forms/src/directives/default_value_accessor';
+import { Security } from '../../providers/security';
 
-declare var cfm: any;
-declare var md5: any;
-declare global {
-  interface String {
-    d() : string;
-    e() : string;
-    x() : string;
-  }
-}
+declare var cfm:any
 
 export interface ConnectionInfo {
   url: string,
@@ -30,7 +24,7 @@ export class SettingsPage {
     url: "https://www.cadapultfm.com/fmcloudbeta", cid: "FMDemo", userid: "", password: ""
   }
 
-  constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController,private sec:Security) {
     ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
@@ -41,7 +35,7 @@ export class SettingsPage {
   connect() {
     let options = { message: "", duration: 3000 };
     var rmis = new cfm.rmi.RMIService()
-    rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid, password: this.process(this.conInfo.password) })
+    rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid, password: this.sec.authtoken(this.conInfo.password) })
     rmis.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${this.conInfo.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
       .then((proxy) => {
         proxy.testConnectionAsync().then((x) => {
@@ -58,24 +52,11 @@ export class SettingsPage {
         })
       },
       (x) => {
-        options.message = x.msg
+        options.duration=10000;
+        options.message = x
         this.toastCtrl.create(options).present()
       })
   }
-
-  process(pass: string): string {
-    let password: any = new Date().getTime() + 10000;
-    password = password + "-" + md5(password + "" + pass);
-    return password
-  }
-
-  validate(x: string, pass: string): boolean {
-    let time = x.split("-")
-    if (new Date().getTime() > Number(time[0])) return false;
-    return md5(time[0] + pass) == time[1]
-  }
-
   toggleMode(i) {
-
   }
 }
