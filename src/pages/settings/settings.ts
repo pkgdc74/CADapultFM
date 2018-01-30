@@ -5,13 +5,17 @@ import { global } from '@angular/core/src/util';
 import { Security } from '../../providers/security';
 
 declare var cfm:any
-
+enum status{
+  NotConnected=0,
+  Connected=1
+}
 export interface ConnectionInfo {
   url: string,
   cid: string,
   userid: string,
   password: string,
-  offline:boolean
+  offline:boolean,
+  status:status
 }
 
 @Component({
@@ -21,7 +25,7 @@ export interface ConnectionInfo {
 
 export class SettingsPage {
   conInfo: ConnectionInfo = {
-    url: "https://www.cadapultfm.com/fmcloudbeta", cid: "FMDemo", userid: "", password: "",offline:false
+    url: "https://www.cadapultfm.com/fmcloudbeta", cid: "FMDemo", userid: "", password: "",offline:false, status:status.NotConnected
   }
 
   constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController,private sec:Security) {
@@ -33,7 +37,7 @@ export class SettingsPage {
   }
 
   connect() {
-    let options = { message: "", duration: 3000 };
+    let options = {position:"top", message: "", duration: 3000 };
     var rmis = new cfm.rmi.RMIService()
     rmis.setRMIHeader({ cid: this.conInfo.cid, userid: this.conInfo.userid, password: this.sec.authtoken(this.conInfo.password) })
     rmis.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${this.conInfo.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
@@ -42,7 +46,8 @@ export class SettingsPage {
           if (x.status === "OK") {
             options.message = "Connection successful"
             this.toastCtrl.create(options).present()
-            this.saveState()
+            this.conInfo.status=status.Connected;
+            this.saveState().then(x=>this.navCtrl.parent.select(0))
           } else {
             options.message = x.msg
             this.toastCtrl.create(options).present()
@@ -50,7 +55,6 @@ export class SettingsPage {
         })
       },
       (x) => {
-        options.duration=10000;
         options.message = x
         this.toastCtrl.create(options).present()
       })

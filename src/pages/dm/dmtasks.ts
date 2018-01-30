@@ -3,17 +3,25 @@ import { NavController, ModalController } from 'ionic-angular';
 import { SignaturePage } from '../signature/signature';
 import { Modal } from 'ionic-angular/components/modal/modal';
 import { DataService } from '../../providers/data-service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'dmtasks',
   templateUrl: 'dmtasks.html'
 })
 export class DMTasksPage {
-  wos: any[]
-  constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService) {
-    //this.ds.get("dm").then(d => { this.wos = d; })
+  private wos: object[]=[]
+  private subscription:Subscription
+  constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService) {}
 
+  ionViewWillEnter() {
+    this.subscription=this.ds.subscribe("DMTasks", (d:object[]) => { this.wos = d;})
   }
+  
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
+  }
+  
   toggleWip(wo) {
     wo.wips = wo.wips || []
     wo.startTime = wo.startTime || 0
@@ -25,9 +33,11 @@ export class DMTasksPage {
       wo.startTime = new Date().getTime()
     }
   }
-  closeWO(wo) {
 
+  closeWO(wo) {
   }
+  
+  
   signWO(wo) {
     let m: Modal = this.modalCtrl.create(SignaturePage, { du: wo.signature || "" })
     m.onDidDismiss((d) => {

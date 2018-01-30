@@ -1,11 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center>DM Tasks
-      <ion-badge item-top>260k</ion-badge>
-    </ion-title>
+    <ion-title text-center>DM Tasks <ion-badge color="danger">{{wos.length}}</ion-badge></ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content no-padding>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-fab bottom right>
     <button ion-fab mini>
       <ion-icon name="add"></ion-icon>
@@ -18,18 +19,22 @@
     <ion-item-sliding *ngFor="let wo of wos">
       <ion-item no-lines class="bottom-border">
         <ion-row>
-          <ion-col><h1>00000{{wo.woid}}</h1></ion-col>
+          <ion-col>
+            <h1>{{wo.requestid}}</h1>
+          </ion-col>
           <ion-col>
             <p *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</p>
             <wip #wip [startTime]="wo?.startTime"></wip>
           </ion-col>
-          <ion-col text-right>1/20/2018</ion-col>
+          <ion-col text-right>
+            <h3>{{wo.scheduleddate|date:'MM/dd/yyyy'}}</h3>
+          </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <h2>Test location</h2>
-            <h3>Test location</h3>
-            <p items-start text-wrap>Very large textVery large textVery large textVery large text</p>
+            <h2>{{wo.requesttype}} / {{wo.request}}</h2>
+            <h3>{{wo.building}} / {{wo.floor}} / {{wo.room}}</h3>
+            <p items-start text-wrap>{{wo.description}}</p>
           </ion-col>
         </ion-row>
       </ion-item>
@@ -39,9 +44,9 @@
           WIP
         </button>
         <button ion-button color="light" icon-start (click)="signWO(wo)">
-            <ion-icon name="md-create"></ion-icon>
-            Sign
-          </button>
+          <ion-icon name="md-create"></ion-icon>
+          Sign
+        </button>
         <button ion-button color="light" icon-start (click)="closeWO(wo)">
           <ion-icon name="md-checkmark-circle-outline"></ion-icon>
           Close
