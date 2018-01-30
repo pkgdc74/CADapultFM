@@ -14,7 +14,7 @@ export class DataService {
   private subscription={unsubscribe:()=>{}}
 
   constructor(private storage:Storage,private security:Security) {
-    this.engine=Observable.timer(0,10000)
+    this.engine=Observable.timer(0,300000)
     this.publisher=new BehaviorSubject(0)
     this.appStateChanged()
   }
