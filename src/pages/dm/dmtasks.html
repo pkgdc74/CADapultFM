@@ -23,8 +23,7 @@
             <h1>{{wo.requestid}}</h1>
           </ion-col>
           <ion-col>
-            <p *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</p>
-            <wip #wip [startTime]="wo?.startTime"></wip>
+           <span *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</span> <wip #wip [startTime]="wo?.startTime"></wip>
           </ion-col>
           <ion-col text-right>
             <h3>{{wo.scheduleddate|date:'MM/dd/yyyy'}}</h3>
