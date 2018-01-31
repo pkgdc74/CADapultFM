@@ -15,7 +15,7 @@ export class DataService {
   private subscription = { unsubscribe: () => { } }
 
   constructor(private storage: Storage, private security: Security) {
-    this.engine = Observable.timer(0, 3000)
+    this.engine = Observable.timer(0, 300000)
     this.publisher = new BehaviorSubject(0)
     this.get("wos").then(x=>{
       this.publisher.next(x)
