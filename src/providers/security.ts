@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-declare var cfm: any;
+
 declare var md5: any;
 declare global {
   interface String {

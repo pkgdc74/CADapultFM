@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service';
-import { global } from '@angular/core/src/util';
 import { Security } from '../../providers/security';
 
 declare var cfm:any

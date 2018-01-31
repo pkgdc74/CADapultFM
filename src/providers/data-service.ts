@@ -15,7 +15,7 @@ export class DataService {
   private subscription = { unsubscribe: () => { } }
 
   constructor(private storage: Storage, private security: Security) {
-    this.engine = Observable.timer(0, 300000)
+    this.engine = Observable.timer(0, 3000)
     this.publisher = new BehaviorSubject(0)
     this.get("wos").then(x=>{
       this.publisher.next(x)
@@ -38,14 +38,14 @@ export class DataService {
 
   subscribe(name: string, x: (a: object[]) => void): Subscription {
     return this.publisher.subscribe((data) => {
-      if (data == 0) return
+      if (data==null || data == 0) return
       x(data[name])
     })
   }
 
   woSummary(x: (a: {}) => void) {
     return this.publisher.subscribe((data) => {
-      if (data == 0) return
+      if (data==null || data == 0) return
       data = { "dm": data["DMTasks"].length, "pm": data["PMTasks"].length, "assets": data["Assets"].length }
       x(data)
     })
@@ -66,7 +66,7 @@ export class DataService {
       if (info == null) return
       if (info.status == 1 && !info.offline) {
         this.subscription.unsubscribe();
-        this.subscription = this.engine.switchMap((x) => {
+        this.subscription = this.engine.switchMap<any,any>((x) => {
           let rmi = new cfm.rmi.RMIService()
           rmi.setRMIHeader({ cid: info.cid, userid: info.userid, password: this.security.authtoken(info.password.d()) });
           let p = rmi.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${info.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
