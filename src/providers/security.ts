@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 
-
 declare var md5: any;
 declare global {
   interface String {
@@ -13,7 +12,6 @@ declare global {
 @Injectable()
 export class Security{
     constructor(){
-        
     }
     authtoken(pass:string):string{
         let password:string  = String(new Date().getTime() + 10000);

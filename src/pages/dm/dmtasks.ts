@@ -1,27 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 import { SignaturePage } from '../signature/signature';
 import { Modal } from 'ionic-angular/components/modal/modal';
 import { DataService } from '../../providers/data-service';
 import { Subscription } from 'rxjs/Subscription';
+import { AppState } from '../../appstate/app.state';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import * as DM from "../../appstate/dmredux"
 
 @Component({
   selector: 'dmtasks',
   templateUrl: 'dmtasks.html'
 })
 export class DMTasksPage {
-  private wos: object[]=[]
-  private subscription:Subscription
-  constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService) {}
+  private wos: Observable<any[]>
+  private subscription: Subscription
+  constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService, private store: Store<AppState>) {
+    this.wos = this.store.select(state => state.dms)
+  }
 
-  ionViewWillEnter() {
-    this.subscription=this.ds.subscribe("DMTasks", (d:object[]) => { this.wos=this.wos.concat(d)})
-  }
-  
-  ionViewWillLeave() {
-    this.subscription.unsubscribe();
-  }
-  
   toggleWip(wo) {
     wo.wips = wo.wips || []
     wo.startTime = wo.startTime || 0
@@ -32,26 +30,23 @@ export class DMTasksPage {
     } else {
       wo.startTime = new Date().getTime()
     }
-    this.saveState()
+    this.saveState(wo)
   }
 
   closeWO(wo) {
-    this.saveState()
+    this.saveState(wo)
   }
 
-  saveState(){
-    this.ds.get("wos").then(x=>{
-      x.DMTasks=this.wos;
-      this.ds.set("wos",x)
-    })
+  saveState(wo) {
+    this.store.dispatch(new DM.Save(wo,this.ds))
   }
-  
+
   signWO(wo) {
     let m: Modal = this.modalCtrl.create(SignaturePage, { du: wo.signature || "" })
     m.onDidDismiss((d) => {
-      if (!wo.signature){
+      if (!wo.signature) {
         wo.signature = d;
-        this.saveState()
+        this.saveState(wo)
       }
     })
     m.present()

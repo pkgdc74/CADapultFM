@@ -11,9 +11,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ComponentsModule } from '../components/components.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { SignaturePage } from '../pages/signature/signature';
-import { DataService } from '../providers/data-service';
+import { DataService, DMEffects } from '../providers/data-service';
 import { IonicStorageModule } from '@ionic/storage';
 import { Security } from '../providers/security';
+import { StoreModule } from '@ngrx/store';
+import { dmreducer } from '../appstate/dmredux';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,8 @@ import { Security } from '../providers/security';
     BrowserModule,
     IonicModule.forRoot(MyApp), ComponentsModule,
     IonicStorageModule.forRoot(),
+    StoreModule.forRoot({dms:dmreducer}),
+    EffectsModule.forRoot([DMEffects]),
     PipesModule
   ],
   bootstrap: [IonicApp],

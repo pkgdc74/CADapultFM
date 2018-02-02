@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center>DM Tasks <ion-badge color="danger">{{wos.length}}</ion-badge></ion-title>
+    <ion-title text-center>DM Tasks <ion-badge color="danger">{{(wos|async).length}}</ion-badge></ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content no-padding>
@@ -16,7 +16,7 @@
     <ion-list-header>
       Active Work Orders
     </ion-list-header>
-    <ion-item-sliding *ngFor="let wo of wos">
+    <ion-item-sliding *ngFor="let wo of wos|async">
       <ion-item no-lines class="bottom-border">
         <ion-row>
           <ion-col>
