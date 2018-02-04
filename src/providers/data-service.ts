@@ -1,13 +1,11 @@
 
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Rx";
 import { Security } from "./security";
-import { Subscription } from 'rxjs/Subscription';
 import { AppState } from '../appstate/app.state';
 import { Store } from '@ngrx/store';
-import { DMActionsTypes, LoadRemoteDone, LoadRemote } from '../appstate/dmredux';
+import { DMActionsTypes, LoadRemote } from '../appstate/dmredux';
 import { Actions, Effect } from "@ngrx/effects";
 import { Action } from "@ngrx/store"
 
@@ -22,7 +20,7 @@ export class DataService {
     this.engine = Observable.timer(0, 300000)
     this.get("wos").then(x => {
       this.store.dispatch({ type: DMActionsTypes.DM_LOAD_LOCAL, payload: x ? x.DMTasks : [] });
-    }).then(x => this.appStateChanged())
+    }).then(x => this.reload())
   }
 
   get(key: string): Promise<any> {
@@ -38,13 +36,20 @@ export class DataService {
     return this.storage.set(key, JSON.stringify(data))
   }
 
-  appStateChanged() {
+  reload() {
     this.get("connectionSetting").then((info) => {
       if (info == null) return
       if (info.status == 1 && !info.offline) {
         this.subscription.unsubscribe();
         this.subscription = this.engine.subscribe((x) => {
-          this.store.dispatch(new LoadRemote())
+          let p = this.get("connectionSetting").then((info) => {
+            let rmi = new cfm.rmi.RMIService()
+            rmi.setRMIHeader({ cid: info.cid, userid: info.userid, password: this.security.authtoken(info.password.d()) });
+            return rmi.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${info.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
+              .then(x => x.gettechWOAsync()).then(remote => {
+                this.store.dispatch(new LoadRemote(remote.DMTasks))
+              })
+          })
         })
       } else {
         this.subscription.unsubscribe();
@@ -55,20 +60,12 @@ export class DataService {
 
 @Injectable()
 export class DMEffects {
-  constructor(private actions: Actions, private ds: DataService, private security: Security,private store:Store<AppState>) {
+  constructor(private actions: Actions,private ds:DataService,private store:Store<AppState>) {
   }
-  @Effect()
-  loadRemote: Observable<Action> = this.actions.ofType(DMActionsTypes.DM_LOAD_REMOTE)
-    .flatMap(x => {
-      let p = this.ds.get("connectionSetting").then((info) => {
-        if (info == null || info.status != 1 || info.offline) return null
-        let rmi = new cfm.rmi.RMIService()
-        rmi.setRMIHeader({ cid: info.cid, userid: info.userid, password: this.security.authtoken(info.password.d()) });
-        return rmi.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${info.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
-          .then(x => x.gettechWOAsync()).then(remote => {
-            return new LoadRemoteDone(remote.DMTasks)
-          })
-      })
-      return Observable.fromPromise(p)
-    })
+  @Effect({dispatch:false}) 
+  loadRemote: Observable<number> = this.actions.ofType(DMActionsTypes.DM_ADD,DMActionsTypes.DM_SAVE,DMActionsTypes.DM_LOAD_REMOTE)
+  .map((action)=>{
+    return 0
+  })
+    
 }
