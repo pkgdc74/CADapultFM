@@ -16,7 +16,6 @@ import { Security } from '../providers/security';
 import { StoreModule } from '@ngrx/store';
 import { dmreducer } from '../pages/dm/dmredux';
 import { pmreducer } from '../pages/pm/pmredux';
-import { EffectsModule } from '@ngrx/effects';
 import { DataService } from '../providers/data-service';
 
 @NgModule({

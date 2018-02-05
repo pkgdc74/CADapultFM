@@ -5,11 +5,8 @@ import { Observable } from "rxjs/Rx";
 import { Security } from "./security";
 import { AppState } from '../appstate/app.state';
 import { Store } from '@ngrx/store';
-import { Actions, Effect } from "@ngrx/effects";
-import { Action } from "@ngrx/store"
 import * as dm from '../pages/dm/dmredux';
 import * as pm from '../pages/pm/pmredux';
-
 
 declare var cfm;
 
@@ -20,7 +17,7 @@ export class DataService {
 
   constructor(private storage: Storage, private security: Security, private store: Store<AppState>) {
     this.engine = Observable.timer(0, 300000)
-    Promise.all([this.get("dms"),this.get("pms")]).then((data)=>{
+    Promise.all([this.get("dms"), this.get("pms")]).then((data) => {
       this.store.dispatch({ type: dm.DMActionsTypes.DM_LOAD_LOCAL, payload: data[0] ? data[0] : [] });
       this.store.dispatch({ type: pm.PMActionsTypes.PM_LOAD_LOCAL, payload: data[1] ? data[1] : [] });
     }).then(x => this.reload())
@@ -45,20 +42,20 @@ export class DataService {
       if (info.status == 1 && !info.offline) {
         this.subscription.unsubscribe();
         this.subscription = this.engine.subscribe((x) => {
-          let p = this.get("connectionSetting").then((info) => {
+          this.get("connectionSetting").then((info) => {
             let rmi = new cfm.rmi.RMIService()
             rmi.setRMIHeader({ cid: info.cid, userid: info.userid, password: this.security.authtoken(info.password.d()) });
             return rmi.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${info.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
               .then(x => x.gettechWOAsync()).then(remote => {
                 this.store.dispatch(new dm.LoadRemote(remote.DMTasks))
                 this.store.dispatch(new pm.LoadRemote(remote.PMTasks))
-              }).catch(err=>{
-                this.store.dispatch({type:"xxx"})
+              }).catch(err => {
+                this.store.dispatch({ type: "xxx" })
               })
           })
         })
       } else {
-        this.store.dispatch({type:"xxx"})
+        this.store.dispatch({ type: "xxx" })
         this.subscription.unsubscribe();
       }
     })

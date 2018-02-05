@@ -1,9 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 import { SignaturePage } from '../signature/signature';
 import { Modal } from 'ionic-angular/components/modal/modal';
 import { DataService } from '../../providers/data-service';
-import { Subscription } from 'rxjs/Subscription';
 import { AppState } from '../../appstate/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +14,7 @@ import * as pm from "./pmredux"
 })
 export class PMTasksPage {
   private wos: Observable<any[]>
-  private subscription: Subscription
+  
   constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService, private store: Store<AppState>) {
     this.wos = this.store.select(state => state.pms)
   }
