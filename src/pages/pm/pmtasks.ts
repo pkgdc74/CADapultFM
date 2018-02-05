@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AppState } from '../../appstate/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import * as DM from "./pmredux"
+import * as pm from "./pmredux"
 
 @Component({
   selector: 'pmtasks',
@@ -38,7 +38,7 @@ export class PMTasksPage {
   }
 
   saveState(wo) {
-    this.store.dispatch(new DM.Save(wo,this.ds))
+    this.store.dispatch(new pm.Save(wo,this.ds))
   }
 
   signWO(wo) {

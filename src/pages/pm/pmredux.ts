@@ -27,7 +27,7 @@ export class Save implements Action {
     readonly type = PMActionsTypes.PM_SAVE
     constructor(public payload: any, private ds: DataService) { }
     saveLocal(data) {
-        this.ds.set("dms", data)
+        this.ds.set("pms", data)
     }
 }
 
@@ -42,10 +42,10 @@ export function pmreducer(state: any[] = [], action: PMActions) {
             let remote=action.payload
             state.forEach(local=>{
                 remote.forEach((remote,i,arr)=>{
-                    if(remote.requestid===local.requestid)
+                    if(remote.id===local.id)
                         arr[i]=local
                 })
-                if(local.requestid===-1)
+                if(local.id===-1)
                     remote.push(local)
             })
             return remote
@@ -55,7 +55,7 @@ export function pmreducer(state: any[] = [], action: PMActions) {
         }
         case PMActionsTypes.PM_SAVE: {
             let cs = state.map(item => {
-                return item.requestid === action.payload.requestid
+                return item.id === action.payload.id
                     ? Object.assign({}, item, action.payload)
                     : item;
             });

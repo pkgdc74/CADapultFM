@@ -17,19 +17,19 @@
       <ion-item no-lines class="bottom-border">
         <ion-row>
           <ion-col>
-            <h1>{{wo.requestid}}</h1>
+            <h1>{{wo.id}}</h1>
           </ion-col>
           <ion-col>
             <span *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</span> <wip #wip [startTime]="wo?.localWipSt"></wip>
           </ion-col>
           <ion-col text-right>
-            <h3>{{wo.scheduleddate|date:'MM/dd/yyyy'}}</h3>
+            <h3>{{wo.eventdate|date:'MM/dd/yyyy'}}</h3>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <h2>{{wo.requesttype}} / {{wo.request}}</h2>
-            <h3>{{wo.building}} / {{wo.floor}} / {{wo.room}}</h3>
+            <h2>{{wo.mainttype}}</h2>
+            <h3>{{wo.eventlocation}}</h3>
             <p items-start text-wrap>{{wo.description}}</p>
           </ion-col>
         </ion-row>
