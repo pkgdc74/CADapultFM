@@ -45,10 +45,13 @@ export function dmreducer(state: any[] = [], action: DMActions) {
         case DMActionsTypes.DM_LOAD_REMOTE: {
             let result: any[] = [];
             state.forEach(v => {
-                let remote = action.payload.find(x => x.requestid === v.requestid)
-                result.push(Object.assign({}, remote ? v : remote))
+                let i = action.payload.indexOf(x => x.requestid === v.requestid)
+                if(i!=-1)
+                    action.payload[i]=v;
+                if(v.requestid==-1)
+                    action.payload.push(v)
             })
-            return result;
+            return action.payload;
         }
         case DMActionsTypes.DM_ADD: {
             return [...state, action.payload]
