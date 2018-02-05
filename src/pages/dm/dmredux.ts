@@ -1,5 +1,5 @@
 import { Action } from "@ngrx/store";
-import { DataService } from "../providers/data-service";
+import { DataService } from "../../providers/data-service";
 
 
 export class DMActionsTypes {
@@ -27,11 +27,7 @@ export class Save implements Action {
     readonly type = DMActionsTypes.DM_SAVE
     constructor(public payload: any, private ds: DataService) { }
     saveLocal(data) {
-        this.ds.get("wos").then(wos => {
-            wos = wos || { DMTasks: [] }
-            wos.DMTasks = data
-            this.ds.set("wos", wos)
-        })
+        this.ds.set("dms", data)
     }
 }
 
@@ -43,15 +39,16 @@ export function dmreducer(state: any[] = [], action: DMActions) {
             return action.payload;
         }
         case DMActionsTypes.DM_LOAD_REMOTE: {
-            let result: any[] = [];
-            state.forEach(v => {
-                let i = action.payload.indexOf(x => x.requestid === v.requestid)
-                if(i!=-1)
-                    action.payload[i]=v;
-                if(v.requestid==-1)
-                    action.payload.push(v)
+            let remote=action.payload
+            state.forEach(local=>{
+                remote.forEach((remote,i,arr)=>{
+                    if(remote.requestid===local.requestid)
+                        arr[i]=local
+                })
+                if(local.requestid===-1)
+                    remote.push(local)
             })
-            return action.payload;
+            return remote
         }
         case DMActionsTypes.DM_ADD: {
             return [...state, action.payload]
@@ -59,7 +56,7 @@ export function dmreducer(state: any[] = [], action: DMActions) {
         case DMActionsTypes.DM_SAVE: {
             let cs = state.map(item => {
                 return item.requestid === action.payload.requestid
-                    ? Object.assign({}, item, { value: action.payload })
+                    ? Object.assign({}, item, action.payload)
                     : item;
             });
             action.saveLocal(cs)

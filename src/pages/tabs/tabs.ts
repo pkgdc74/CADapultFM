@@ -20,10 +20,14 @@ export class TabsPage {
   tab1Root = DMTasksPage;
   tab2Root = PMTasksPage;
   tab3Root = SettingsPage;
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>,private ds:DataService) {
+    this.ds.get("connectionSetting").then((connection)=>{
+      if(connection==null || connection.status==0)
+        this.tabRef.select(2)
+    })
     this.summary=this.store.select((state) => {
       //this needs to be fixed when I start working with PMS.
-      return  {dms:state.dms.length,pms:0}
+      return  {dms:state.dms.length,pms:state.pms.length}
     })
   }
   @ViewChild('myTabs') tabRef: Tabs;

@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AppState } from '../../appstate/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import * as DM from "../../appstate/dmredux"
+import * as DM from "./dmredux"
 
 @Component({
   selector: 'dmtasks',
@@ -22,13 +22,13 @@ export class DMTasksPage {
 
   toggleWip(wo) {
     wo.wips = wo.wips || []
-    wo.startTime = wo.startTime || 0
-    if (wo.startTime > 0) {
-      wo.wips.push({ "st": wo.startTime, "et": new Date().getTime() })
-      wo.startTime = 0;
+    wo.localWipSt = wo.localWipSt || 0
+    if (wo.localWipSt > 0) {
+      wo.wips.push({ "st": wo.localWipSt, "et": new Date().getTime() })
+      wo.localWipSt = 0;
       wo.labor = wo.wips.reduce((s, x) => { return s + (x.et - x.st) }, 0)
     } else {
-      wo.startTime = new Date().getTime()
+      wo.localWipSt = new Date().getTime()
     }
     this.saveState(wo)
   }
@@ -50,5 +50,11 @@ export class DMTasksPage {
       }
     })
     m.present()
+  }
+  doRefresh(refresher){
+    this.ds.reload()
+    this.store.skipLast(1).subscribe(x=>{
+      refresher.complete()
+    })
   }
 }

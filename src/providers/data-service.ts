@@ -5,9 +5,11 @@ import { Observable } from "rxjs/Rx";
 import { Security } from "./security";
 import { AppState } from '../appstate/app.state';
 import { Store } from '@ngrx/store';
-import { DMActionsTypes, LoadRemote } from '../appstate/dmredux';
 import { Actions, Effect } from "@ngrx/effects";
 import { Action } from "@ngrx/store"
+import * as dm from '../pages/dm/dmredux';
+import * as pm from '../pages/pm/pmredux';
+
 
 declare var cfm;
 
@@ -18,8 +20,9 @@ export class DataService {
 
   constructor(private storage: Storage, private security: Security, private store: Store<AppState>) {
     this.engine = Observable.timer(0, 300000)
-    this.get("wos").then(x => {
-      this.store.dispatch({ type: DMActionsTypes.DM_LOAD_LOCAL, payload: x ? x.DMTasks : [] });
+    Promise.all([this.get("dms"),this.get("pms")]).then((data)=>{
+      this.store.dispatch({ type: dm.DMActionsTypes.DM_LOAD_LOCAL, payload: data[0] ? data[0] : [] });
+      this.store.dispatch({ type: pm.PMActionsTypes.PM_LOAD_LOCAL, payload: data[1] ? data[1] : [] });
     }).then(x => this.reload())
   }
 
@@ -47,25 +50,18 @@ export class DataService {
             rmi.setRMIHeader({ cid: info.cid, userid: info.userid, password: this.security.authtoken(info.password.d()) });
             return rmi.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${info.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
               .then(x => x.gettechWOAsync()).then(remote => {
-                this.store.dispatch(new LoadRemote(remote.DMTasks))
+                this.store.dispatch(new dm.LoadRemote(remote.DMTasks))
+                this.store.dispatch(new pm.LoadRemote(remote.PMTasks))
+              }).catch(err=>{
+                this.store.dispatch({type:"xxx"})
               })
           })
         })
       } else {
+        this.store.dispatch({type:"xxx"})
         this.subscription.unsubscribe();
       }
     })
   }
 }
 
-@Injectable()
-export class DMEffects {
-  constructor(private actions: Actions,private ds:DataService,private store:Store<AppState>) {
-  }
-  @Effect({dispatch:false}) 
-  loadRemote: Observable<number> = this.actions.ofType(DMActionsTypes.DM_ADD,DMActionsTypes.DM_SAVE,DMActionsTypes.DM_LOAD_REMOTE)
-  .map((action)=>{
-    return 0
-  })
-    
-}

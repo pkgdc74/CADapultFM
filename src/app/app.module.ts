@@ -14,9 +14,10 @@ import { SignaturePage } from '../pages/signature/signature';
 import { IonicStorageModule } from '@ionic/storage';
 import { Security } from '../providers/security';
 import { StoreModule } from '@ngrx/store';
-import { dmreducer } from '../appstate/dmredux';
+import { dmreducer } from '../pages/dm/dmredux';
+import { pmreducer } from '../pages/pm/pmredux';
 import { EffectsModule } from '@ngrx/effects';
-import { DMEffects, DataService } from '../providers/data-service';
+import { DataService } from '../providers/data-service';
 
 @NgModule({
   declarations: [
@@ -26,8 +27,7 @@ import { DMEffects, DataService } from '../providers/data-service';
     BrowserModule,
     IonicModule.forRoot(MyApp), ComponentsModule,
     IonicStorageModule.forRoot(),
-    StoreModule.forRoot({dms:dmreducer}),
-    EffectsModule.forRoot([DMEffects]),
+    StoreModule.forRoot({dms:dmreducer,pms:pmreducer}),
     PipesModule
   ],
   bootstrap: [IonicApp],
