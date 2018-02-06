@@ -14,7 +14,7 @@
   </ion-fab>
   <ion-list>
     <ion-item-sliding *ngFor="let wo of wos|async">
-      <ion-item no-lines class="bottom-border">
+      <ion-item no-lines [ngClass]="{'bottom-border': true, 'closed':wo.techstatus=='closed'}">
         <ion-row>
           <ion-col>
             <h1>{{wo.requestid}}</h1>
@@ -34,7 +34,7 @@
           </ion-col>
         </ion-row>
       </ion-item>
-      <ion-item-options>
+      <ion-item-options *ngIf="wo.techstatus!='closed'">
         <button ion-button color="light" icon-start (click)="toggleWip(wo)">
           <ion-icon name="ios-clock-outline"></ion-icon>
           WIP
@@ -43,7 +43,7 @@
           <ion-icon name="md-create"></ion-icon>
           Sign
         </button>
-        <button ion-button color="light" icon-start (click)="closeWO(wo)">
+        <button ion-button color="light" icon-start (click)="closeWO(wo)" >
           <ion-icon name="md-checkmark-circle-outline"></ion-icon>
           Close
         </button>

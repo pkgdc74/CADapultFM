@@ -16,7 +16,10 @@ import { Security } from '../providers/security';
 import { StoreModule } from '@ngrx/store';
 import { dmreducer } from '../pages/dm/dmredux';
 import { pmreducer } from '../pages/pm/pmredux';
+import { EffectsModule } from '@ngrx/effects';
 import { DataService } from '../providers/data-service';
+import { DMEffects } from '../pages/dm/dmeffects';
+
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { DataService } from '../providers/data-service';
     IonicModule.forRoot(MyApp), ComponentsModule,
     IonicStorageModule.forRoot(),
     StoreModule.forRoot({dms:dmreducer,pms:pmreducer}),
+    EffectsModule.forRoot([DMEffects]),
     PipesModule
   ],
   bootstrap: [IonicApp],

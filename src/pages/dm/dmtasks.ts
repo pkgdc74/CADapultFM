@@ -33,6 +33,9 @@ export class DMTasksPage {
   }
 
   closeWO(wo) {
+    wo.techstatus='closed'
+    if(wo.localWipSt && wo.localWipSt>0)
+      this.toggleWip(wo)
     this.saveState(wo)
   }
 

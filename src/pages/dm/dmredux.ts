@@ -1,6 +1,9 @@
-import { Action } from "@ngrx/store";
+import { Injectable } from "@angular/core";
+import { AppState } from "../../appstate/app.state";
+import { Store, Action } from "@ngrx/store";
 import { DataService } from "../../providers/data-service";
-
+import { Actions, Effect } from "@ngrx/effects";
+import { Observable } from "rxjs";
 
 export class DMActionsTypes {
     static readonly DM_LOAD_LOCAL = "DM_LOAD_LOCAL";
@@ -39,13 +42,13 @@ export function dmreducer(state: any[] = [], action: DMActions) {
             return action.payload;
         }
         case DMActionsTypes.DM_LOAD_REMOTE: {
-            let remote=action.payload
-            state.forEach(local=>{
-                remote.forEach((remote,i,arr)=>{
-                    if(remote.requestid===local.requestid)
-                        arr[i]=local
+            let remote = action.payload
+            state.forEach(local => {
+                remote.forEach((remote, i, arr) => {
+                    if (remote.requestid === local.requestid)
+                        arr[i] = local
                 })
-                if(local.requestid===-1)
+                if (local.requestid === -1)
                     remote.push(local)
             })
             return remote
