@@ -1,10 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center>PM Tasks <ion-badge color="danger">{{(wos|async).length}}</ion-badge></ion-title>
+    <ion-title text-center>PM Tasks
+      <ion-badge color="danger">{{(wos|async).length}}</ion-badge>
+    </ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content no-padding>
-    <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!(appsettings|async).offline">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-fab bottom right>
@@ -20,7 +22,8 @@
             <h1>{{wo.id}}</h1>
           </ion-col>
           <ion-col>
-            <span *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</span> <wip #wip [startTime]="wo?.localWipSt"></wip>
+            <span *ngIf="!!wo.labor">{{wo.labor|timeUsed}}</span>
+            <wip #wip [startTime]="wo?.localWipSt"></wip>
           </ion-col>
           <ion-col text-right>
             <h3>{{wo.eventdate|date:'MM/dd/yyyy'}}</h3>

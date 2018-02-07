@@ -18,7 +18,7 @@ export class AppEffects {
     .do(action=>{
         this.store.take(1).subscribe(state=>{
             this.ds.set("appsettings",{...state.appsettings,password:state.appsettings.password.e()})
-            if(<AppSettings>action.payload.offline){
+            if(state.appsettings.offline){
                 this.ds.set("dms",state.dms)
                 this.ds.set("pms",state.pms)
             }

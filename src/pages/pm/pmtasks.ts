@@ -7,16 +7,19 @@ import { AppState } from '../../appstate/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as pm from "./pmredux"
+import { AppSettings } from '../settings/appsettingsstate';
 
 @Component({
   selector: 'pmtasks',
   templateUrl: 'pmtasks.html'
 })
 export class PMTasksPage {
+  appsettings: Store<AppSettings>;
   private wos: Observable<any[]>
   
   constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService, private store: Store<AppState>) {
     this.wos = this.store.select(state => state.pms)
+    this.appsettings = this.store.select("appsettings")
   }
 
   toggleWip(wo) {

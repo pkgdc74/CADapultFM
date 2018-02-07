@@ -7,34 +7,42 @@ import { AppState } from '../../appstate/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as DM from "./dmredux"
+import { AppSettings } from '../settings/appsettingsstate';
 
 @Component({
   selector: 'dmtasks',
   templateUrl: 'dmtasks.html'
 })
 export class DMTasksPage {
+  appsettings: Observable<AppSettings>;
   private wos: Observable<any[]>
 
   constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService, private store: Store<AppState>) {
     this.wos = this.store.select("dms")
+    this.appsettings = this.store.select("appsettings")
   }
-
+  private userTouched(wo){
+    if(!wo.userTouched)
+      wo.userTouched={}
+  }
   toggleWip(wo) {
-    wo.wips = wo.wips || []
-    wo.localWipSt = wo.localWipSt || 0
-    if (wo.localWipSt > 0) {
-      wo.wips.push({ "st": wo.localWipSt, "et": new Date().getTime() })
-      wo.localWipSt = 0;
-      wo.labor = wo.wips.reduce((s, x) => { return s + (x.et - x.st) }, 0)
+    this.userTouched(wo)
+    wo.userTouched.wips = wo.userTouched.wips || []
+    wo.userTouched.localWipSt = wo.userTouched.localWipSt || 0
+    if (wo.userTouched.localWipSt > 0) {
+      wo.userTouched.wips.push({ "st": wo.userTouched.localWipSt, "et": new Date().getTime() })
+      wo.userTouched.localWipSt = 0;
+      wo.userTouched.labor = wo.userTouched.wips.reduce((s, x) => { return s + (x.et - x.st) }, 0)
     } else {
-      wo.localWipSt = new Date().getTime()
+      wo.userTouched.localWipSt = new Date().getTime()
     }
     this.saveState(wo)
   }
 
   closeWO(wo) {
+    this.userTouched(wo)
     wo.techstatus='closed'
-    if(wo.localWipSt && wo.localWipSt>0)
+    if(wo.userTouched.localWipSt && wo.userTouched.localWipSt>0)
       this.toggleWip(wo)
     this.saveState(wo)
   }
@@ -44,10 +52,11 @@ export class DMTasksPage {
   }
 
   signWO(wo) {
-    let m: Modal = this.modalCtrl.create(SignaturePage, { du: wo.signature || "" })
+    this.userTouched(wo)
+    let m: Modal = this.modalCtrl.create(SignaturePage, { du: wo.userTouched.signature || "" })
     m.onDidDismiss((d) => {
-      if (!wo.signature) {
-        wo.signature = d;
+      if (!wo.userTouched.signature) {
+        wo.userTouched.signature = d;
         this.saveState(wo)
       }
     })
