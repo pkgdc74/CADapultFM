@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service';
 import { Security } from '../../providers/security';
-import { AppSettings, defaultAppSettings, ConnectionStatus } from './appsettingsstate';
+import { AppSettings, defaultAppSettings, ConnectionStatus, AppSettingsSave } from './appsettingsstate';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../appstate/app.state';
 
@@ -15,13 +15,11 @@ declare var cfm: any
 })
 
 export class SettingsPage {
-  private conInfo:AppSettings=defaultAppSettings
+  private conInfo: AppSettings
 
-  constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController, private sec: Security,private store:Store<AppState>) {
-    this.ds.get("connectionSetting").then((x) => {
-      if (x == null) return
-      this.conInfo = x;
-      this.conInfo.password = this.conInfo.password.d()
+  constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController, private sec: Security, private store: Store<AppState>) {
+    this.store.select("appsettings").subscribe(state => {
+      this.conInfo = state
     })
   }
 
@@ -36,7 +34,8 @@ export class SettingsPage {
             options.message = "Connection successful"
             this.toastCtrl.create(options).present()
             this.conInfo.status = ConnectionStatus.Connected;
-            this.saveState().then(x => this.navCtrl.parent.select(0))
+            this.saveState()
+            this.navCtrl.parent.select(0)
           } else {
             options.message = x.msg
             this.toastCtrl.create(options).present()
@@ -48,12 +47,10 @@ export class SettingsPage {
         this.toastCtrl.create(options).present()
       })
   }
-  private saveState(): Promise<any> {
+  private saveState() {
     let info = Object.assign({}, this.conInfo)
-    info.password = info.password.e();
-    return this.ds.set("connectionSetting", info).then((x) => {
-      this.ds.reload();
-    })
+    this.store.dispatch(new AppSettingsSave(info))
+    this.ds.reload();
   }
   toggleMode(flag) {
     this.conInfo.offline = flag

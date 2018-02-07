@@ -16,7 +16,7 @@ export class DMTasksPage {
   private wos: Observable<any[]>
 
   constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService, private store: Store<AppState>) {
-    this.wos = this.store.select(state => state.dms)
+    this.wos = this.store.select("dms")
   }
 
   toggleWip(wo) {
@@ -55,9 +55,8 @@ export class DMTasksPage {
   }
   doRefresh(refresher){
     this.ds.reload()
-    let subs=this.store.skipLast(1).subscribe(x=>{
+    this.store.skip(1).take(1).subscribe(x=>{
       refresher.complete()
-      subs.unsubscribe()
     })
   }
 }

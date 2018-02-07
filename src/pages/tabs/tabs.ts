@@ -15,21 +15,26 @@ import { Observable } from "rxjs/Rx";
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-  private summary: Observable<any>=Observable.of({dms:0,pms:0});
-  subscription: Subscription;
+  private summary: Observable<any>
+  @ViewChild('myTabs') 
+  tabRef: Tabs;
   tab1Root = DMTasksPage;
   tab2Root = PMTasksPage;
   tab3Root = SettingsPage;
-  constructor(private store: Store<AppState>,private ds:DataService) {
-    this.ds.get("connectionSetting").then((connection)=>{
-      if(connection==null || connection.status==0)
-        this.tabRef.select(2)
-    })
-    this.summary=this.store.select((state) => {
-      //this needs to be fixed when I start working with PMS.
-      return  {dms:state.dms.length,pms:state.pms.length}
+  constructor(private store: Store<AppState>, private ds: DataService) {
+    this.summary = this.store.select((state) => {
+      return { dms: state.dms.length, pms: state.pms.length }
     })
   }
-  @ViewChild('myTabs') tabRef: Tabs;
 
+  ionViewDidLoad() {
+    this.ds.get("appsettings").then(connection=>{
+      if(connection==null ||connection.status==0)
+        this.tabRef.select(2)
+    })
+  }
+
+  ionViewDidEnter() {
+    
+  }
 }

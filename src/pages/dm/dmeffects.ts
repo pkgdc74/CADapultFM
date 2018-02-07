@@ -9,7 +9,6 @@ import { DataService } from "../../providers/data-service";
 export class DMEffects {
     constructor(private actions: Actions, private ds: DataService, private store: Store<AppState>) {
         this.store.sample(this.save).subscribe((store)=>{
-            console.log(store.dms)
             this.ds.set("dms",store.dms)
         })
     }

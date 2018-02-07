@@ -7,19 +7,28 @@ import { AppState } from '../appstate/app.state';
 import { Store } from '@ngrx/store';
 import * as dm from '../pages/dm/dmredux';
 import * as pm from '../pages/pm/pmredux';
+import * as app from '../pages/settings/appsettingsstate';
+import { state } from '@angular/core/src/animation/dsl';
 
 declare var cfm;
 
 @Injectable()
 export class DataService {
   private engine: Observable<any>;
-  private subscription = { unsubscribe: () => { } }
+  private appsettings: app.AppSettings;
 
   constructor(private storage: Storage, private security: Security, private store: Store<AppState>) {
     this.engine = Observable.timer(0, 300000)
-    Promise.all([this.set("dms",[]),this.get("dms"), this.get("pms")]).then((data) => {
-      this.store.dispatch({ type: dm.DMActionsTypes.DM_LOAD_LOCAL, payload: data[1] ? data[1] : [] });
-      this.store.dispatch({ type: pm.PMActionsTypes.PM_LOAD_LOCAL, payload: data[2] ? data[2] : [] });
+    this.store.select("appsettings").subscribe(s => this.appsettings = s)
+    let apps=this.get("appsettings").then(x=>{
+      if(x==null)return
+      x.password=x.password.d();
+      return x;
+    })
+    Promise.all([this.get("dms"), this.get("pms"), apps]).then((data) => {
+      this.store.dispatch({ type: dm.DMActionsTypes.DM_LOAD_LOCAL, payload: data[0] ? data[0] : [] });
+      this.store.dispatch({ type: pm.PMActionsTypes.PM_LOAD_LOCAL, payload: data[1] ? data[1] : [] });
+      this.store.dispatch(new app.AppSettingsLoad(data[2] ? data[2] : app.defaultAppSettings));
     }).then(x => this.reload())
   }
 
@@ -35,32 +44,26 @@ export class DataService {
   set(key: string, data: any): Promise<any> {
     return this.storage.set(key, JSON.stringify(data))
   }
-
+  subscription:any
   reload() {
-    this.get("connectionSetting").then((info) => {
-      if (info == null) return
-      if (info.status == 1 && !info.offline) {
-        this.subscription.unsubscribe();
-        this.subscription = this.engine.subscribe((x) => {
-          this.get("connectionSetting").then((info) => {
-            let rmi = new cfm.rmi.RMIService()
-            rmi.setRMIHeader({ cid: info.cid, userid: info.userid, password: this.security.authtoken(info.password.d()) });
-            return rmi.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${info.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
-              .then(x => x.gettechWOAsync()).then(remote => {
-                this.store.dispatch(new dm.LoadRemote(remote.DMTasks))
-                this.store.dispatch(new pm.LoadRemote(remote.PMTasks))
-              }).catch(err => {
-                this.store.dispatch({ type: "xxx" })
-              })
+    if(this.subscription)
+        this.subscription.unsubscribe()
+    if (this.appsettings == null) return
+    if (this.appsettings.status == 1 && !this.appsettings.offline) {
+      this.subscription=this.engine.subscribe((x) => {
+        let rmi = new cfm.rmi.RMIService()
+        rmi.setRMIHeader({ cid: this.appsettings.cid, userid: this.appsettings.userid, password: this.security.authtoken(this.appsettings.password) });
+        return rmi.getProxyAsync("com.mobile.invpmdm.InvPMDMRMIService", `${this.appsettings.url}/invpmdm/mobile/invpmdmmobilermiservice.asp`)
+          .then(x => x.gettechWOAsync()).then(remote => {
+            this.store.dispatch(new dm.LoadRemote(remote.DMTasks))
+            this.store.dispatch(new pm.LoadRemote(remote.PMTasks))
+          }).catch(err => {
+            this.store.dispatch({ type: "xxx" })
           })
-        })
-      } else {
-        this.store.dispatch({ type: "xxx" })
-        this.subscription.unsubscribe();
-      }
-    })
+      })
+    } else {
+      this.store.dispatch({type: "xxx" })
+    }
   }
-  
-  
 }
 

@@ -52,7 +52,7 @@ export class PMTasksPage {
   }
   doRefresh(refresher){
     this.ds.reload()
-    this.store.skipLast(1).subscribe(x=>{
+    this.store.skip(1).take(1).subscribe(x=>{
       refresher.complete()
     })
   }
