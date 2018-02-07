@@ -2,20 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { DataService } from '../../providers/data-service';
 import { Security } from '../../providers/security';
+import { AppSettings, defaultAppSettings, ConnectionStatus } from './appsettingsstate';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../appstate/app.state';
 
 declare var cfm: any
-enum status {
-  NotConnected = 0,
-  Connected = 1
-}
-export interface ConnectionInfo {
-  url: string,
-  cid: string,
-  userid: string,
-  password: string,
-  offline: boolean,
-  status: status
-}
+
 
 @Component({
   selector: 'settings',
@@ -23,11 +15,9 @@ export interface ConnectionInfo {
 })
 
 export class SettingsPage {
-  conInfo: ConnectionInfo = {
-    url: "https://www.cadapultfm.com/fmcloudbeta", cid: "FMDemo", userid: "", password: "", offline: false, status: status.NotConnected
-  }
+  private conInfo:AppSettings=defaultAppSettings
 
-  constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController, private sec: Security) {
+  constructor(public navCtrl: NavController, private ds: DataService, private toastCtrl: ToastController, private sec: Security,private store:Store<AppState>) {
     this.ds.get("connectionSetting").then((x) => {
       if (x == null) return
       this.conInfo = x;
@@ -45,7 +35,7 @@ export class SettingsPage {
           if (x.status === "OK") {
             options.message = "Connection successful"
             this.toastCtrl.create(options).present()
-            this.conInfo.status = status.Connected;
+            this.conInfo.status = ConnectionStatus.Connected;
             this.saveState().then(x => this.navCtrl.parent.select(0))
           } else {
             options.message = x.msg

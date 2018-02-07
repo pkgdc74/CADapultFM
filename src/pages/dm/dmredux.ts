@@ -28,10 +28,7 @@ export class Add implements Action {
 
 export class Save implements Action {
     readonly type = DMActionsTypes.DM_SAVE
-    constructor(public payload: any, private ds: DataService) { }
-    saveLocal(data) {
-        this.ds.set("dms", data)
-    }
+    constructor(public payload: any) { }
 }
 
 export type DMActions = LoadLoacal | LoadRemote | Add | Save
@@ -62,7 +59,6 @@ export function dmreducer(state: any[] = [], action: DMActions) {
                     ? Object.assign({}, item, action.payload)
                     : item;
             });
-            action.saveLocal(cs)
             return cs;
         }
         default: {

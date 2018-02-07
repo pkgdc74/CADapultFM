@@ -17,9 +17,9 @@ export class DataService {
 
   constructor(private storage: Storage, private security: Security, private store: Store<AppState>) {
     this.engine = Observable.timer(0, 300000)
-    Promise.all([this.get("dms"), this.get("pms")]).then((data) => {
-      this.store.dispatch({ type: dm.DMActionsTypes.DM_LOAD_LOCAL, payload: data[0] ? data[0] : [] });
-      this.store.dispatch({ type: pm.PMActionsTypes.PM_LOAD_LOCAL, payload: data[1] ? data[1] : [] });
+    Promise.all([this.set("dms",[]),this.get("dms"), this.get("pms")]).then((data) => {
+      this.store.dispatch({ type: dm.DMActionsTypes.DM_LOAD_LOCAL, payload: data[1] ? data[1] : [] });
+      this.store.dispatch({ type: pm.PMActionsTypes.PM_LOAD_LOCAL, payload: data[2] ? data[2] : [] });
     }).then(x => this.reload())
   }
 
@@ -60,5 +60,7 @@ export class DataService {
       }
     })
   }
+  
+  
 }
 

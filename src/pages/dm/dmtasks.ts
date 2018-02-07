@@ -40,7 +40,7 @@ export class DMTasksPage {
   }
 
   saveState(wo) {
-    this.store.dispatch(new DM.Save(wo,this.ds))
+    this.store.dispatch(new DM.Save(wo))
   }
 
   signWO(wo) {
@@ -55,8 +55,9 @@ export class DMTasksPage {
   }
   doRefresh(refresher){
     this.ds.reload()
-    this.store.skipLast(1).subscribe(x=>{
+    let subs=this.store.skipLast(1).subscribe(x=>{
       refresher.complete()
+      subs.unsubscribe()
     })
   }
 }

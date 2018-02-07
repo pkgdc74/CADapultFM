@@ -19,6 +19,7 @@ import { pmreducer } from '../pages/pm/pmredux';
 import { EffectsModule } from '@ngrx/effects';
 import { DataService } from '../providers/data-service';
 import { DMEffects } from '../pages/dm/dmeffects';
+import { appsettingsreducer } from '../pages/settings/appsettingsstate';
 
 
 @NgModule({
@@ -29,7 +30,7 @@ import { DMEffects } from '../pages/dm/dmeffects';
     BrowserModule,
     IonicModule.forRoot(MyApp), ComponentsModule,
     IonicStorageModule.forRoot(),
-    StoreModule.forRoot({dms:dmreducer,pms:pmreducer}),
+    StoreModule.forRoot({dms:dmreducer,pms:pmreducer,appsettings:appsettingsreducer}),
     EffectsModule.forRoot([DMEffects]),
     PipesModule
   ],
