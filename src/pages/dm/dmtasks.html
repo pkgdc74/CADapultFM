@@ -22,6 +22,7 @@
             <h1>{{wo.requestid}}</h1>
           </ion-col>
           <ion-col>
+            <ion-icon name="md-create" *ngIf="wo?.userTouched?.signature" style="color:green"></ion-icon>
             <span *ngIf="!!wo?.userTouched?.labor">{{wo.userTouched.labor|timeUsed}}</span>
             <wip #wip [startTime]="wo?.userTouched?.localWipSt"></wip>
           </ion-col>

@@ -23,7 +23,7 @@ export class DMEffects {
                 this.rmi.getProxy().then(proxy=>{
                     return proxy.saveDMAsync(wo.requestid, wo.techstatus, wo.techcomments)
                 }).then(x => {
-                    this.ds.reload()
+                    //this.ds.reload()
                 })
             
             })
