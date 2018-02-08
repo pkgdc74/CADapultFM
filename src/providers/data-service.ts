@@ -56,10 +56,8 @@ export class DataService {
           let pms = wos[1] || []
           dms = dms.filter(wo => wo.userTouched ? true : false)
           pms = pms.filter(wo => wo.userTouched ? true : false)
-          console.log([pms.length, dms.length])
           return Promise.all([wos[2].syncDmsAsync(dms), wos[2].syncPmsAsync(pms)]).then(x => wos[2])
         }).then((proxy) => {
-          console.log("secodn")
           proxy.gettechWOAsync().then(remote => {
             this.store.dispatch(new dm.LoadRemote(remote.DMTasks))
             this.store.dispatch(new pm.LoadRemote(remote.PMTasks))

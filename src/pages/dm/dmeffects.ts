@@ -18,13 +18,13 @@ export class DMEffects {
         .do(action => {
             this.store.take(1).subscribe((store) => {
                 this.ds.set("dms", store.dms)
-                let proxy=this.rmi.getProxy()
-                if (proxy== null) 
-                    return
                 let wo: any = action.payload
-                proxy.saveDMAsync(wo.requestid, wo.techstatus, wo.techcomments).then(x => {
+                this.rmi.getProxy().then(proxy=>{
+                    return proxy.saveDMAsync(wo.requestid, wo.techstatus, wo.techcomments)
+                }).then(x => {
                     this.ds.reload()
                 })
+            
             })
         })
 

@@ -37,7 +37,9 @@ cfm.rmi.RMIService = function () {
     var objectToParams = function (o) {
         var p = []
         for (var i in o) {
-            p.push(encodeURIComponent(i) + "=" + encodeURIComponent(o[i]));
+            var type=util.getVarType(o[i])
+            var param=(type=="array"||type=="array")?JSON.stringify(o[i]):o[i]
+            p.push(encodeURIComponent(i) + "=" + encodeURIComponent(param));
         }
         return p.join("&")
     }
