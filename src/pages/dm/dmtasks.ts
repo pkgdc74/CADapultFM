@@ -16,10 +16,13 @@ import { AppSettings } from '../settings/appsettingsstate';
 export class DMTasksPage {
   appsettings: Observable<AppSettings>;
   private wos: Observable<any[]>
-
+  private priority:any={}
   constructor(public navCtrl: NavController, private modalCtrl: ModalController, private ds: DataService, private store: Store<AppState>) {
     this.wos = this.store.select("dms")
     this.appsettings = this.store.select("appsettings")
+    this.store.select("fmtables").subscribe(fmtables=>{
+      fmtables["priority"].forEach(itm=>this.priority[itm.value]=itm.color)
+    })
   }
   private userTouched(wo){
     if(!wo.userTouched)

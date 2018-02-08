@@ -19,7 +19,7 @@
       <ion-item no-lines [ngClass]="{'bottom-border': true, 'closed':wo.techstatus=='closed'}">
         <ion-row>
           <ion-col>
-            <h1>{{wo.requestid}}</h1>
+            <h1 [style.color]="priority[wo.priority]">{{wo.requestid}}</h1>
           </ion-col>
           <ion-col>
             <ion-icon name="md-create" *ngIf="wo?.userTouched?.signature" style="color:green"></ion-icon>

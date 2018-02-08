@@ -22,6 +22,7 @@ import { DMEffects } from '../pages/dm/dmeffects';
 import { appsettingsreducer } from '../pages/settings/appsettingsstate';
 import { AppEffects } from '../pages/settings/appeffects';
 import { RMIService } from '../providers/rmiservice';
+import { fmtablesreducer } from './fmcommon';
 
 
 @NgModule({
@@ -32,7 +33,7 @@ import { RMIService } from '../providers/rmiservice';
     BrowserModule,
     IonicModule.forRoot(MyApp), ComponentsModule,
     IonicStorageModule.forRoot(),
-    StoreModule.forRoot({dms:dmreducer,pms:pmreducer,appsettings:appsettingsreducer}),
+    StoreModule.forRoot({dms:dmreducer,pms:pmreducer,appsettings:appsettingsreducer,fmtables:fmtablesreducer}),
     EffectsModule.forRoot([DMEffects,AppEffects]),
     PipesModule
   ],

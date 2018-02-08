@@ -10,6 +10,7 @@ import * as pm from '../pages/pm/pmredux';
 import * as app from '../pages/settings/appsettingsstate';
 import { state } from '@angular/core/src/animation/dsl';
 import { RMIService } from './rmiservice';
+import * as fmcommon from '../app/fmcommon';
 
 @Injectable()
 export class DataService {
@@ -25,11 +26,16 @@ export class DataService {
       x.password = x.password.d();
       return x;
     })
-    Promise.all([this.get("dms"), this.get("pms"), apps]).then((data) => {
+    Promise.all([this.get("dms"), this.get("pms"), apps,this.get("fmtables")]).then((data) => {
       this.store.dispatch({ type: dm.DMActionsTypes.DM_LOAD_LOCAL, payload: data[0] ? data[0] : [] });
       this.store.dispatch({ type: pm.PMActionsTypes.PM_LOAD_LOCAL, payload: data[1] ? data[1] : [] });
       this.store.dispatch(new app.AppSettingsLoad(data[2] ? data[2] : app.defaultAppSettings));
-    }).then(x => this.reload())
+      this.store.dispatch(new fmcommon.LoadTablesAction(data[3] ? data[3] : fmcommon.initfmtables))
+    })
+    .then(()=>this.rmi.getProxy()).then(proxy=>proxy.getAppTablesAsync()).then((fmtables)=>{
+      this.store.dispatch(new fmcommon.LoadTablesAction(fmtables))
+    })
+    .then(()=>this.reload())
   }
 
   get(key: string): Promise<any> {
