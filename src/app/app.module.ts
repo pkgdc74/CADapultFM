@@ -21,6 +21,7 @@ import { DataService } from '../providers/data-service';
 import { DMEffects } from '../pages/dm/dmeffects';
 import { appsettingsreducer } from '../pages/settings/appsettingsstate';
 import { AppEffects } from '../pages/settings/appeffects';
+import { RMIService } from '../providers/rmiservice';
 
 
 @NgModule({
@@ -40,7 +41,7 @@ import { AppEffects } from '../pages/settings/appeffects';
     MyApp, PMTasksPage, SettingsPage, DMTasksPage, TabsPage, SignaturePage
   ],
   providers: [
-    StatusBar,
+    StatusBar,RMIService,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     DataService,Security

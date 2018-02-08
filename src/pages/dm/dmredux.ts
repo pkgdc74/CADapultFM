@@ -42,7 +42,7 @@ export function dmreducer(state: any[] = [], action: DMActions) {
             let remote = action.payload
             state.forEach(local => {
                 remote.forEach((remote, i, arr) => {
-                    if (remote.requestid === local.requestid)
+                    if (remote.requestid === local.requestid && local.userTouched)
                         arr[i] = local
                 })
                 if (local.requestid === -1)
