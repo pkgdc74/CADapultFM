@@ -56,9 +56,14 @@ export class DataService {
           let pms = wos[1] || []
           dms = dms.filter(wo => wo.userTouched ? true : false)
           pms = pms.filter(wo => wo.userTouched ? true : false)
-          return Promise.all([wos[2].syncDmsAsync(dms), wos[2].syncPmsAsync(pms)]).then(x => wos[2])
-        }).then((proxy) => {
-          proxy.gettechWOAsync().then(remote => {
+          let reqs=[]
+          if(dms.length>0)reqs.push(dms)
+          if(pms.length>0)reqs.push(pms)
+          dms = dms.map(wo=>wo.requestid)
+          pms = pms.map(wo=>wo.id)
+          return Promise.all(reqs).then(x => [wos[2],dms,pms])
+        }).then((params) => {
+          params[0].gettechWOAsync(params[0],params[1]).then(remote => {
             this.store.dispatch(new dm.LoadRemote(remote.DMTasks))
             this.store.dispatch(new pm.LoadRemote(remote.PMTasks))
           }).catch(err => {

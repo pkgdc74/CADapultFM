@@ -19,6 +19,7 @@ export class DMEffects {
             this.store.take(1).subscribe((store) => {
                 this.ds.set("dms", store.dms)
                 let wo: any = action.payload
+                if(!store.appsettings.offline)
                 this.rmi.getProxy().then(proxy=>{
                     return proxy.saveDMAsync(wo.requestid, wo.techstatus, wo.techcomments)
                 }).then(x => {
