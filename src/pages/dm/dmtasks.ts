@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, NavParams } from 'ionic-angular';
 import { SignaturePage } from '../signature/signature';
 import { Modal } from 'ionic-angular/components/modal/modal';
 import { DataService } from '../../providers/data-service';
@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as DM from "./dmredux"
 import { AppSettings } from '../settings/appsettingsstate';
+import { DmdetailPage } from '../dmdetail/dmdetail';
 
 @Component({
   selector: 'dmtasks',
@@ -70,5 +71,8 @@ export class DMTasksPage {
     this.store.skip(1).take(1).subscribe(x=>{
       refresher.complete()
     })
+  }
+  showDetail(wo){
+    this.navCtrl.push(DmdetailPage,{requestid:wo.requestid})
   }
 }

@@ -1,0 +1,10 @@
+<ion-header>
+  <ion-navbar text-center hideBackButton>
+    <ion-title>DM {{requestid}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div (swipe)="swipeEvent($event)" style="height:100%">
+    Swiped: {{requestid}} times
+  </div>
+</ion-content>

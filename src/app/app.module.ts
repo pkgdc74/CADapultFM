@@ -23,11 +23,12 @@ import { appsettingsreducer } from '../pages/settings/appsettingsstate';
 import { AppEffects } from '../pages/settings/appeffects';
 import { RMIService } from '../providers/rmiservice';
 import { fmtablesreducer } from './fmcommon';
+import { DmdetailPage } from '../pages/dmdetail/dmdetail';
 
 
 @NgModule({
   declarations: [
-    MyApp, PMTasksPage, SettingsPage, DMTasksPage, TabsPage, SignaturePage
+    MyApp, PMTasksPage, SettingsPage, DMTasksPage, TabsPage, SignaturePage,DmdetailPage
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,7 @@ import { fmtablesreducer } from './fmcommon';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp, PMTasksPage, SettingsPage, DMTasksPage, TabsPage, SignaturePage
+    MyApp, PMTasksPage, SettingsPage, DMTasksPage, TabsPage, SignaturePage,DmdetailPage
   ],
   providers: [
     StatusBar,RMIService,
