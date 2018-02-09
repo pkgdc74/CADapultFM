@@ -26,16 +26,16 @@ export class DataService {
       x.password = x.password.d();
       return x;
     })
-    Promise.all([this.get("dms"), this.get("pms"), apps,this.get("fmtables")]).then((data) => {
-      this.store.dispatch({ type: dm.DMActionsTypes.DM_LOAD_LOCAL, payload: data[0] ? data[0] : [] });
-      this.store.dispatch({ type: pm.PMActionsTypes.PM_LOAD_LOCAL, payload: data[1] ? data[1] : [] });
+    Promise.all([this.get("dms"), this.get("pms"), apps, this.get("fmtables")]).then((data) => {
+      this.store.dispatch(new dm.LoadLoacal(data[0] ? data[0] : []));
+      this.store.dispatch(new pm.LoadLoacal(data[1] ? data[1] : []));
       this.store.dispatch(new app.AppSettingsLoad(data[2] ? data[2] : app.defaultAppSettings));
       this.store.dispatch(new fmcommon.LoadTablesAction(data[3] ? data[3] : fmcommon.initfmtables))
     })
-    .then(()=>this.rmi.getProxy()).then(proxy=>proxy.getAppTablesAsync()).then((fmtables)=>{
-      this.store.dispatch(new fmcommon.LoadTablesAction(fmtables))
-    })
-    .then(()=>this.reload())
+      .then(() => this.rmi.getProxy()).then(proxy => proxy.getAppTablesAsync()).then((fmtables) => {
+        this.store.dispatch(new fmcommon.LoadTablesAction(fmtables))
+      })
+      .then(() => this.reload())
   }
 
   get(key: string): Promise<any> {
@@ -62,9 +62,9 @@ export class DataService {
           let pms = wos[1] || []
           dms = dms.filter(wo => wo.userTouched ? true : false)
           pms = pms.filter(wo => wo.userTouched ? true : false)
-          let reqs=[]
-          if(dms.length>0)reqs.push(wos[2].syncDmsAsync(dms))
-          if(pms.length>0)reqs.push(wos[2].syncPmsAsync(pms))
+          let reqs = []
+          if (dms.length > 0) reqs.push(wos[2].syncDmsAsync(dms))
+          if (pms.length > 0) reqs.push(wos[2].syncPmsAsync(pms))
           return Promise.all(reqs).then(x => wos[2])
         }).then((proxy) => {
           proxy.gettechWOAsync().then(remote => {
