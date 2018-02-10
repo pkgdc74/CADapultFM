@@ -17,9 +17,9 @@ export class DmdetailPage {
   }
   swipeEvent(e) {
     if(e.direction==2)
-      this.navCtrl.push(DmdetailPage,{requestid:this.requestid+1},{animate:true,animation:"ios-transition",direction:"forward",duration:1000})
+      this.navCtrl.push(DmdetailPage,{requestid:this.requestid+1},{animate:true,animation:"ios-transition",direction:"forward",duration:300})
     else
-      this.navCtrl.push(DmdetailPage,{requestid:this.requestid-1},{animate:true,animation:"ios-transition",direction:"back",duration:1000})
+      this.navCtrl.push(DmdetailPage,{requestid:this.requestid-1},{animate:true,animation:"ios-transition",direction:"back",duration:300})
   }
   next(){
 
