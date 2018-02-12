@@ -1,10 +1,11 @@
 <ion-header>
-  <ion-navbar text-center hideBackButton>
-    <ion-title>DM {{requestid}}</ion-title>
+  <ion-navbar text-center hideBackButton danger>
+    <ion-title>DM {{rs?.requestid}}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content padding *ngIf="rs">
   <div (swipe)="swipeEvent($event)" style="height:100%">
-    Swiped: {{requestid}} times
+    Swiped: {{rs.requestid}} times
+    <labor></labor>
   </div>
 </ion-content>

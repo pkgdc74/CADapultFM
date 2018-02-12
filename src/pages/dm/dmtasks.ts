@@ -72,7 +72,7 @@ export class DMTasksPage {
       refresher.complete()
     })
   }
-  showDetail(wo){
-    this.navCtrl.push(DmdetailPage,{requestid:wo.requestid})
+  showDetail(wo,index){
+    this.navCtrl.push(DmdetailPage,{index:index},{animate:true,animation:"ios-transition",direction:"up",duration:300})
   }
 }
