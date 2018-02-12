@@ -1,11 +1,51 @@
 <ion-header>
   <ion-navbar text-center hideBackButton danger>
     <ion-title>DM {{rs?.requestid}}</ion-title>
+    <ion-segment [(ngModel)]="section">
+      <ion-segment-button value="detailView">
+        Request Info
+      </ion-segment-button>
+      <ion-segment-button value="laborView">
+        Labor
+      </ion-segment-button>
+    </ion-segment>
   </ion-navbar>
 </ion-header>
 <ion-content padding *ngIf="rs">
   <div (swipe)="swipeEvent($event)" style="height:100%">
-    Swiped: {{rs.requestid}} times
-    <labor></labor>
+    <div [ngSwitch]="section">
+      <div *ngSwitchCase="'detailView'">
+          <ion-card>
+            <ion-card-header>
+              Requester
+            </ion-card-header>
+            <ion-card-content>
+              <p>{{rs.reqfname}} {{rs.reqlname}}</p>
+              <div><ion-icon name="call" item-start></ion-icon> {{rs.reqphone}}</div>
+              <div><ion-icon name="mail" item-start></ion-icon> <a href="mailto:{{rs.reqemail}}">{{rs.reqemail}}</a></div>
+            </ion-card-content>
+          </ion-card>
+
+
+          <ion-card>
+            <ion-card-header>Task Details {{rs.scheduleddate|date:'MM/dd/yyyy'}}</ion-card-header>
+            <ion-card-content>
+              <p>
+                  {{rs.requesttype}} / {{rs.request}}
+              </p>
+              <p>
+                  {{rs.building}} / {{rs.floor}} / {{rs.room}}
+              </p>
+              <p>
+                  {{rs.building}}
+              </p>
+
+            </ion-card-content>
+          </ion-card>
+      </div>
+      <div *ngSwitchCase="'laborView'">
+        <labor labor="laborarr"></labor>
+      </div>
+    </div>
   </div>
 </ion-content>

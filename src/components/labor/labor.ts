@@ -1,22 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-/**
- * Generated class for the LaborComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+export interface Labor{
+  description:string;
+  hours:number;
+  rate:number
+}
+
 @Component({
   selector: 'labor',
   templateUrl: 'labor.html'
 })
 export class LaborComponent {
+  @Input("data")
+  laborarr:Labor[]=[]
 
-  text: string;
-
-  constructor() {
-    console.log('Hello LaborComponent Component');
-    this.text = 'Hello World';
+  private laborForm:FormGroup
+  constructor(private fb:FormBuilder) {
+    this.laborForm=this.fb.group({
+      description:['',Validators.required],
+      hours:['',Validators.compose([Validators.required,Validators.min(0)])],
+      rate:['',Validators.compose([Validators.required,Validators.min(1)])]
+    })
+    
   }
-
+  add(labor){
+    this.laborarr.push(labor)
+    this.laborForm.setValue({hours:"",rate:"",description:""})
+  }
+  delete(idx){
+    this.laborarr.splice(idx,1)
+  }
+  cost(){
+    return this.laborarr.reduce((s,itm)=>{s+=itm.rate*itm.hours;return s},0)
+  }
 }
