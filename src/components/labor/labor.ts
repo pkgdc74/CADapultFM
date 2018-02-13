@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 export interface Labor{
@@ -14,6 +14,8 @@ export interface Labor{
 export class LaborComponent {
   @Input("data")
   laborarr:Labor[]=[]
+  @Output("data")
+  laborarrChange=new EventEmitter<Labor[]>()
 
   private laborForm:FormGroup
   constructor(private fb:FormBuilder) {

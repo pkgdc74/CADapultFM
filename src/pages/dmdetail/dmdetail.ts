@@ -14,14 +14,14 @@ export class DmdetailPage {
   private index: number;
   private wos: any[];
   private rs: any;
-   laborarr:Labor[]=[]
-   private section:string="detailView"
-   private priority:any={}
+  private laborarr: Labor[] = []
+  private section: string = "detailView"
+  private priority: any = {}
   constructor(public navCtrl: NavController, public navParams: NavParams, private store: Store<AppState>) {
     this.index = this.navParams.get("index")
-    this.store.subscribe(data => { 
-      this.wos = data.dms; this.rs = this.wos[this.index] 
-      data.fmtables["priority"].forEach(itm=>this.priority[itm.value]=itm.color)
+    this.store.subscribe(data => {
+      this.wos = data.dms; this.rs = this.wos[this.index]
+      data.fmtables["priority"].forEach(itm => this.priority[itm.value] = itm.color)
     })
   }
 
