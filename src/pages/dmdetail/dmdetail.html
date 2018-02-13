@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-navbar text-center hideBackButton danger>
+  <ion-navbar text-center hideBackButton>
     <ion-title>DM {{rs?.requestid}}</ion-title>
-    <ion-segment [(ngModel)]="section">
+    <ion-segment [(ngModel)]="section" color="dark">
       <ion-segment-button value="detailView">
         Request Info
       </ion-segment-button>
@@ -15,33 +15,37 @@
   <div (swipe)="swipeEvent($event)" style="height:100%">
     <div [ngSwitch]="section">
       <div *ngSwitchCase="'detailView'">
-          <ion-card>
-            <ion-card-header>
-              Requester
-            </ion-card-header>
-            <ion-card-content>
-              <p>{{rs.reqfname}} {{rs.reqlname}}</p>
-              <div><ion-icon name="call" item-start></ion-icon> {{rs.reqphone}}</div>
-              <div><ion-icon name="mail" item-start></ion-icon> <a href="mailto:{{rs.reqemail}}">{{rs.reqemail}}</a></div>
-            </ion-card-content>
-          </ion-card>
-
-
-          <ion-card>
-            <ion-card-header>Task Details {{rs.scheduleddate|date:'MM/dd/yyyy'}}</ion-card-header>
-            <ion-card-content>
-              <p>
-                  {{rs.requesttype}} / {{rs.request}}
-              </p>
-              <p>
-                  {{rs.building}} / {{rs.floor}} / {{rs.room}}
-              </p>
-              <p>
-                  {{rs.building}}
-              </p>
-
-            </ion-card-content>
-          </ion-card>
+        <ion-card>
+          <ion-card-header>
+            Requester
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{rs.reqfname}} {{rs.reqlname}}</p>
+            <div>
+              <ion-icon name="call" item-start></ion-icon> {{rs.reqphone}}</div>
+            <div>
+              <ion-icon name="mail" item-start></ion-icon>
+              <a href="mailto:{{rs.reqemail}}">{{rs.reqemail}}</a>
+            </div>
+          </ion-card-content>
+        </ion-card>
+        <ion-card>
+          <ion-card-header [style.color]="priority[rs.priority]">
+            Task Details
+            <ion-note float-right>{{rs.scheduleddate|date:'MM/dd/yyyy'}}</ion-note>
+          </ion-card-header>
+          <ion-card-content>
+            <p>
+              {{rs.requesttype}} / {{rs.request}}
+            </p>
+            <p>
+              {{rs.building}} / {{rs.floor}} / {{rs.room}}
+            </p>
+            <p>
+              {{rs.description}}
+            </p>
+          </ion-card-content>
+        </ion-card>
       </div>
       <div *ngSwitchCase="'laborView'">
         <labor labor="laborarr"></labor>
