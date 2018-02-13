@@ -2,15 +2,15 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-textarea rows="2" placeholder="add labor discription here" formControlName="description"></ion-textarea>
+        <ion-textarea rows="2" placeholder="add labor discription here" formControlName="description" #taDesc></ion-textarea>
       </ion-col>
       <ion-grid>
         <ion-row align-items-center>
           <ion-col>
-            <ion-input type="text" placeholder="Hours" formControlName="hours"></ion-input>
+            <ion-input type="number" placeholder="Hours" formControlName="hours"></ion-input>
           </ion-col>
           <ion-col>
-            <ion-input type="text" placeholder="Rate" formControlName="rate"></ion-input>
+            <ion-input type="number" placeholder="Rate" formControlName="rate"></ion-input>
           </ion-col>
           <ion-col>
             {{laborForm.value.hours*laborForm.value.rate}}
