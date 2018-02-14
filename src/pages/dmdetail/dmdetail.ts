@@ -34,7 +34,7 @@ export class DmdetailPage {
   swipeEvent(e) {
     let next = (e.direction == 2) ? 1 : -1;
     let nextInd = this.index + next;
-    if (nextInd >= this.wosLen || nextInd < 0) return;
+    if (nextInd >= this.wosLen ) return;
     if (next == 1)
       this.navCtrl.push(DmdetailPage, { index: nextInd }, { animate: true, animation: "ios-transition", direction: "forward", duration: 300 })
     else

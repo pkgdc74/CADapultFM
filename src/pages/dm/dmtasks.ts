@@ -73,6 +73,7 @@ export class DMTasksPage {
     })
   }
   showDetail(wo,index){
+    if(wo.techstatus.toLowerCase()=='closed')return
     this.navCtrl.push(DmdetailPage,{index:index},{animate:true,animation:"ios-transition",direction:"up",duration:300})
   }
 }
