@@ -6,7 +6,8 @@ export class LoadTablesAction {
     constructor(public payload: any) { }
 }
 export const initfmtables: FMTables = {
-    priority: []
+    priority: [],
+    documents:[]
 }
 export type Actions = LoadTablesAction
 export function fmtablesreducer(state: FMTables = initfmtables, action: Actions) {

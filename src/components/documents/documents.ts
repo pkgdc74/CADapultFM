@@ -6,8 +6,8 @@ import { Component, Input } from '@angular/core';
   templateUrl: 'documents.html'
 })
 export class DocumentsComponent {
-  @Input("docs")
-  documents:any[]=[]
+  @Input("dox")
+  private documents:any[]=[]
   constructor() {
     
   }

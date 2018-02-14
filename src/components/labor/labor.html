@@ -1,46 +1,38 @@
 <form [formGroup]="laborForm" (ngSubmit)="add(laborForm.value)">
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-textarea rows="2" placeholder="add labor discription here" formControlName="description" #taDesc></ion-textarea>
-      </ion-col>
-      <ion-grid>
-        <ion-row align-items-center>
-          <ion-col>
-            <ion-input type="number" placeholder="Hours" formControlName="hours"></ion-input>
-          </ion-col>
-          <ion-col>
-            <ion-input type="number" placeholder="Rate" formControlName="rate"></ion-input>
-          </ion-col>
-          <ion-col>
-            {{laborForm.value.hours*laborForm.value.rate}}
-          </ion-col>
-          <ion-col>
-            <button ion-button type="submit" [disabled]="!laborForm.valid">
-              Add
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-row>
-    <ion-row align-items-center *ngIf="laborarr.length>0">
-      <b>Total Labor Cost</b>: {{cost()}} </ion-row>
-    <ion-row *ngFor="let labor of laborarr;let idx=index">
-      <ion-col>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Description</ion-label>
+      <ion-textarea rows="2" formControlName="description" #taDesc></ion-textarea>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-item item-content>
+        <ion-input type="number" placeholder="Hours" formControlName="hours"></ion-input>
+      </ion-item>
+      <ion-item item-content>
+        <ion-input type="number" placeholder="Rate" formControlName="rate"></ion-input>
+      </ion-item>
+      <ion-item item-content>{{laborForm.value.hours*laborForm.value.rate}}</ion-item>
+      <ion-item item-content>
+        <button ion-button type="submit" [disabled]="!laborForm.valid">Add</button>
+      </ion-item>
+    </ion-item>
+    <ion-item *ngIf="laborarr.length>0" text-right>
+      <h2>Total Labor Cost: {{cost()}}</h2>
+    </ion-item>
+    <ion-item *ngFor="let labor of laborarr;let idx=index">
+      <ion-item no-lines>
         {{labor.description}}
-      </ion-col>
-      <ion-grid>
-        <ion-row align-items-center>
-          <ion-col>{{labor.hours}}</ion-col>
-          <ion-col>{{labor.rate}}</ion-col>
-          <ion-col>{{labor.hours*labor.rate}}</ion-col>
-          <ion-col>
+      </ion-item>
+      <ion-item no-lines>
+          <ion-item item-content>{{labor.hours}}</ion-item>
+          <ion-item item-content>{{labor.rate}}</ion-item>
+          <ion-item item-content>{{labor.hours*labor.rate}}</ion-item>
+          <ion-item item-content>
             <button ion-button icon-only clear type="button" (click)="delete(idx)">
               <ion-icon name="trash"></ion-icon>
             </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-row>
-  </ion-grid>
+          </ion-item>
+      </ion-item>
+    </ion-item>
+  </ion-list>
 </form>

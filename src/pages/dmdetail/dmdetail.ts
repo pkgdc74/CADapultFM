@@ -16,22 +16,25 @@ export class DmdetailPage {
   private laborarr: Labor[] = []
   private section: string = "detailView"
   private priority: any = {};
-  private data:AppState;
+  private wosLen:number;
+  private dox:any[]
   constructor(public navCtrl: NavController, public navParams: NavParams, private store: Store<AppState>) {
     this.index = this.navParams.get("index")
     this.store.subscribe(data => {
-      this.data=data;
-      this.rs=data[this.index]
+      this.wosLen=data.dms.length;
+      this.rs=data.dms[this.index]
       data.fmtables["priority"].forEach(itm => this.priority[itm.value] = itm.color)
+      this.dox=data.fmtables.documents.filter(x=>x.uid==this.rs.uid || x.uid==this.rs.recurrenceid)
     })
   }
 
   ionViewDidLoad() {
   }
+
   swipeEvent(e) {
     let next = (e.direction == 2) ? 1 : -1;
     let nextInd = this.index + next;
-    if (nextInd >= this.data.dms.length || nextInd < 0) return;
+    if (nextInd >= this.wosLen || nextInd < 0) return;
     if (next == 1)
       this.navCtrl.push(DmdetailPage, { index: nextInd }, { animate: true, animation: "ios-transition", direction: "forward", duration: 300 })
     else

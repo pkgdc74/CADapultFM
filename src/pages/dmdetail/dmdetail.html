@@ -1,9 +1,12 @@
 <ion-header>
-  <ion-navbar text-center hideBackButton>
+  <!-- <ion-navbar text-center hideBackButton> -->
+  <ion-navbar text-center color="primary">
     <ion-title>DM {{rs?.requestid}}</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
     <ion-segment [(ngModel)]="section" color="dark">
       <ion-segment-button value="detailView">
-        Request Info
+        Details
       </ion-segment-button>
       <ion-segment-button value="laborView">
         Labor
@@ -11,11 +14,11 @@
       <ion-segment-button value="partsView">
         Parts
       </ion-segment-button>
-      <ion-segment-button value="attachmentsView">
+      <ion-segment-button value="attachmentsView" *ngIf="dox.length>0">
         <ion-icon name="attach"></ion-icon>
       </ion-segment-button>
     </ion-segment>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 <ion-content padding *ngIf="rs">
   <div (swipe)="swipeEvent($event)" style="height:100%">
@@ -60,7 +63,7 @@
         Parts
       </div>
       <div *ngSwitchCase="'attachmentsView'">
-        <documents [docs]="data.fmtables.documents"></documents>
+        <documents [dox]="dox"></documents>
       </div>
     </div>
   </div>

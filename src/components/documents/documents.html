@@ -1,8 +1,13 @@
-
-
-
 <ion-list>
-  <ion-item *ngFor="let doc of documnets">
-    {{doc.id}} {{doc.title}} {{doc.filename}}
+  <ion-item *ngFor="let doc of documents" >
+    <ion-item item-content no-lines>
+      {{doc.title}}
+    </ion-item>
+    <ion-item item-content no-lines>
+      {{doc.filename}}
+    </ion-item>
+    <button ion-button icon-only clear item-end no-lines>
+      <ion-icon name="download"></ion-icon>
+    </button>
   </ion-item>
 </ion-list>
