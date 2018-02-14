@@ -12,26 +12,26 @@ import { Labor } from '../../components/labor/labor';
 })
 export class DmdetailPage {
   private index: number;
-  private wos: any[];
   private rs: any;
   private laborarr: Labor[] = []
   private section: string = "detailView"
-  private priority: any = {}
+  private priority: any = {};
+  private data:AppState;
   constructor(public navCtrl: NavController, public navParams: NavParams, private store: Store<AppState>) {
     this.index = this.navParams.get("index")
     this.store.subscribe(data => {
-      this.wos = data.dms; this.rs = this.wos[this.index]
+      this.data=data;
+      this.rs=data[this.index]
       data.fmtables["priority"].forEach(itm => this.priority[itm.value] = itm.color)
     })
   }
 
   ionViewDidLoad() {
   }
-
   swipeEvent(e) {
     let next = (e.direction == 2) ? 1 : -1;
     let nextInd = this.index + next;
-    if (nextInd >= this.wos.length || nextInd < 0) return;
+    if (nextInd >= this.data.dms.length || nextInd < 0) return;
     if (next == 1)
       this.navCtrl.push(DmdetailPage, { index: nextInd }, { animate: true, animation: "ios-transition", direction: "forward", duration: 300 })
     else

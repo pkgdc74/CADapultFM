@@ -11,6 +11,9 @@
       <ion-segment-button value="partsView">
         Parts
       </ion-segment-button>
+      <ion-segment-button value="attachmentsView">
+        <ion-icon name="attach"></ion-icon>
+      </ion-segment-button>
     </ion-segment>
   </ion-navbar>
 </ion-header>
@@ -54,7 +57,10 @@
         <labor [(data)]="laborarr"></labor>
       </div>
       <div *ngSwitchCase="'partsView'">
-        <labor [(data)]="laborarr"></labor>
+        Parts
+      </div>
+      <div *ngSwitchCase="'attachmentsView'">
+        <documents [docs]="data.fmtables.documents"></documents>
       </div>
     </div>
   </div>
