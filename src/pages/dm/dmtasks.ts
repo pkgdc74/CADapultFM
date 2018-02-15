@@ -45,7 +45,7 @@ export class DMTasksPage {
 
   closeWO(wo) {
     this.userTouched(wo)
-    wo.techstatus='closed'
+    wo.techstatus='Closed'
     if(wo.userTouched.localWipSt && wo.userTouched.localWipSt>0)
       this.toggleWip(wo)
     this.saveState(wo)
