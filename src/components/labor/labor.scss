@@ -2,4 +2,14 @@ labor {
     ion-item[no-lines] ion-item{
         border-bottom: none
     }
+    ion-row{
+        border-bottom: 1px solid silver
+    }
+    ion-row.header>ion-col{
+        font-weight: bolder;
+        font-size: 1.1em
+    }
+    ion-row[no-lines]{
+        border-bottom: none
+    }
 }

@@ -1,5 +1,10 @@
 documents {
-    .item[no-lines].bottom-border { 
-        border-bottom: 1px solid #dedede;
+    ion-row{
+        border-bottom: 1px solid silver
+    }
+    ion-row.header>ion-col{
+        font-weight: bolder;
+        font-size: 1.1em
     }
 }
+
