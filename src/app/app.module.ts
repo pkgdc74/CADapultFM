@@ -24,6 +24,7 @@ import { AppEffects } from '../pages/settings/appeffects';
 import { RMIService } from '../providers/rmiservice';
 import { fmtablesreducer } from './fmcommon';
 import { DmdetailPage } from '../pages/dmdetail/dmdetail';
+import { File } from "@ionic-native/file";
 
 
 @NgModule({
@@ -46,7 +47,7 @@ import { DmdetailPage } from '../pages/dmdetail/dmdetail';
     StatusBar,RMIService,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    DataService,Security
+    DataService,Security,File
   ]
 })
 export class AppModule { }
