@@ -31,9 +31,9 @@ export class DocumentsComponent {
           return this.file.writeFile(root, doc.filename, file.buffer,{replace:true})
         }).then(x => {
           this.log.push(`file ${JSON.stringify(x)} saved`)
-          this.log.push(`opening file ${x}`)
-          return this.fo.open(x.fullPath,this.mime.getFileExtension(doc.filename))
-          .then(x=>this.log.push(`${x.fullPath} file opened`))
+          this.log.push(`opening file ${x.nativeURL} with extension ${this.mime.getFileExtension(doc.filename)}`)
+          return this.fo.open(x.nativeURL,this.mime.getFileExtension(doc.filename))
+          .then(x=>this.log.push(`${x.nativeURL} file opened`))
           .catch(x=>this.log.push(`error opening file ${x.fullPath}. ${x}`))
         }).catch(x => this.log.push(`error ${x}`))
     }).catch(x => this.log.push(`error ${root}`))
