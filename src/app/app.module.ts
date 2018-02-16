@@ -25,6 +25,7 @@ import { RMIService } from '../providers/rmiservice';
 import { fmtablesreducer } from './fmcommon';
 import { DmdetailPage } from '../pages/dmdetail/dmdetail';
 import { File } from "@ionic-native/file";
+import { FileOpener } from "@ionic-native/file-opener";
 
 
 @NgModule({
@@ -47,7 +48,7 @@ import { File } from "@ionic-native/file";
     StatusBar,RMIService,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    DataService,Security,File
+    DataService,Security,File,FileOpener
   ]
 })
 export class AppModule { }

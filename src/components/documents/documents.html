@@ -14,4 +14,6 @@
     </ion-col>
   </ion-row>
 </ion-grid>
-{{syncedDataDirectory}}
+<div *ngFor="let entry of log">
+  {{entry}}
+</div>
