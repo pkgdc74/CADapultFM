@@ -8,7 +8,12 @@
     <ion-col>{{doc.title}}</ion-col>
     <ion-col>{{doc.filename}}</ion-col>
     <ion-col>
-      <a href="http://cadapultfm1/fmcloudbeta/x.zip" target="blank"><ion-icon name="download"></ion-icon></a>
+      <button ion-button (click)="download(doc)" icon=only clear>
+        <ion-icon name="download"></ion-icon>
+      </button>
     </ion-col>
   </ion-row>
 </ion-grid>
+<div *ngFor="let entry of log">
+  {{entry}}
+</div>
