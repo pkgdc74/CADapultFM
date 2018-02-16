@@ -26,6 +26,7 @@ import { fmtablesreducer } from './fmcommon';
 import { DmdetailPage } from '../pages/dmdetail/dmdetail';
 import { File } from "@ionic-native/file";
 import { FileOpener } from "@ionic-native/file-opener";
+import { MimeTypes } from '../providers/MimeTypes';
 
 
 @NgModule({
@@ -48,7 +49,7 @@ import { FileOpener } from "@ionic-native/file-opener";
     StatusBar,RMIService,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    DataService,Security,File,FileOpener
+    DataService,Security,File,FileOpener,MimeTypes
   ]
 })
 export class AppModule { }
