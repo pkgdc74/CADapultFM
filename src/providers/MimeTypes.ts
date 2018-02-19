@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 @Injectable()
 export class MimeTypes {
-    private static readonly mimes: any = {
+    private readonly mimes: any = {
         "ez": "application/andrew-inset",
         "aw": "application/applixware",
         "atom": "application/atom+xml",
@@ -770,7 +770,11 @@ export class MimeTypes {
         "smv": "video/x-smv",
         "ice": "x-conference/x-cooltalk"
     }
-    getFileExtension(filename) {
-       return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2)||"application/x-unknown";
+    getFileExtension(filename:string) {
+       return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+    }
+    getMimeType(filename:string){
+        let ext=this.getFileExtension(filename);
+        return this.mimes[ext.toLowerCase()]||"application/x-unknown"
     }
 }

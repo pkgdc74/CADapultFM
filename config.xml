@@ -89,9 +89,6 @@
     <plugin name="cordova-sqlite-storage" spec="^2.2.0" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-file-opener2" spec="^2.0.19" />
-    <engine name="android" spec="^6.4.0" />
-    <engine name="ios" spec="^4.5.4" />
-    <engine name="browser" spec="~5.0.3" />
     <plugin name="cordova-plugin-ionic" spec="^2.0.4">
         <variable name="APP_ID" value="ae89e8e6" />
         <variable name="CHANNEL_NAME" value="Master" />
@@ -99,4 +96,7 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
         <variable name="MAX_STORE" value="2" />
     </plugin>
+    <engine name="android" spec="^6.4.0" />
+    <engine name="ios" spec="^4.5.4" />
+    <engine name="browser" spec="~5.0.3" />
 </widget>
