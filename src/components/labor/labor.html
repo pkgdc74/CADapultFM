@@ -7,13 +7,13 @@
     </ion-row>
     <ion-row no-lines align-items-center>
       <ion-col>
+        <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM DD YYYY" formControlName="date" [min]="minDate" [max]="maxDate"></ion-datetime>
+      </ion-col>
+      <ion-col>
         <ion-input type="number" placeholder="Hours" formControlName="hours"></ion-input>
       </ion-col>
       <ion-col>
         <ion-input type="number" placeholder="Rate" formControlName="rate"></ion-input>
-      </ion-col>
-      <ion-col>
-        <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM DD YYYY" formControlName="date" [ngModel]="date"></ion-datetime>
       </ion-col>
       <ion-col>{{laborForm.value.hours*laborForm.value.rate}}</ion-col>
       <ion-col>
@@ -30,9 +30,9 @@
         <ion-col>{{labor.description}}</ion-col>
       </ion-row>
       <ion-row align-items-center>
+        <ion-col>{{labor.date|date:'MM/dd/yyyy'}}</ion-col>
         <ion-col>{{labor.hours}}</ion-col>
         <ion-col>{{labor.rate}}</ion-col>
-        <ion-col>{{labor.date|date:'MM/dd/yyyy'}}</ion-col>
         <ion-col>{{labor.hours*labor.rate}}</ion-col>
         <ion-col>
           <button ion-button icon-only clear type="button" (click)="delete(idx)">

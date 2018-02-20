@@ -17,13 +17,15 @@ export class LaborComponent {
   laborarr:Labor[]=[]
   @Output("data")
   laborarrChange=new EventEmitter<Labor[]>()
-  private laborForm:FormGroup
+  private laborForm:FormGroup;
+  private maxDate:string=new Date().getFullYear()+10+""
+  private minDate:string=new Date().getFullYear()-10+""
   constructor(private fb:FormBuilder,private eref:ElementRef) {
     this.laborForm=this.fb.group({
       description:['',Validators.required],
       hours:['',Validators.compose([Validators.required,Validators.min(0)])],
       rate:['',Validators.compose([Validators.required,Validators.min(1)])],
-      date:['',Validators.compose([Validators.required])],
+      date:[new Date().toISOString(),Validators.compose([Validators.required])],
     })
   }
   private setFocus(){
@@ -37,6 +39,7 @@ export class LaborComponent {
     this.laborarr.push(labor)
     this.laborForm.reset();
     this.setFocus() 
+    this.laborForm.controls["date"].setValue(new Date().toISOString())
   }
   delete(idx){
     this.laborarr.splice(idx,1)
