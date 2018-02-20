@@ -27,6 +27,7 @@ export class LaborComponent {
       rate:['',Validators.compose([Validators.required,Validators.min(1)])],
       date:[new Date().toISOString(),Validators.compose([Validators.required])],
     })
+    //this.laborForm.controls["date"].setValue(new Date().toISOString())
   }
   private setFocus(){
     let element = this.eref.nativeElement.querySelector('textarea');
