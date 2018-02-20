@@ -90,7 +90,7 @@
         <labor [(data)]="laborarr"></labor>
       </div>
       <div *ngSwitchCase="'partsView'">
-        <parts ></parts>
+        <parts [(data)]="parts"></parts>
       </div>
       <div *ngSwitchCase="'attachmentsView'">
         <documents [dox]="dox"></documents>

@@ -1,31 +1,37 @@
-<form [formGroup]="partForm" (ngSubmit)="add(partForm.value)">
+<form [formGroup]="partForm" (ngSubmit)="add(partForm.value);
+">
   <ion-grid>
-    <ion-row align-items-center>
+    <ion-row align-items-center no-lines>
       <ion-col>
         <ion-textarea placeholder="Part Description" formControlName="description"></ion-textarea>
       </ion-col>
     </ion-row>
-    <ion-row align-items-center>
+    <ion-row align-items-center no-lines>
       <ion-col>
-        <ion-input type="number" formControlName="cost"></ion-input>
+        <ion-input type="number" placeholder="cost" formControlName="cost"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-input type="number" formControlName="quantity"></ion-input>
+        <ion-input type="number" placeholder="quantity" formControlName="quantity"></ion-input>
       </ion-col>
       <ion-col>{{partForm.value.cost*partForm.value.quantity}}</ion-col>
       <ion-col>
         <button ion-button type="submit" [disabled]="!partForm.valid">
-          <ion-icon name="add"></ion-icon>
+          Add
         </button>
       </ion-col>
     </ion-row>
-    <ng-container *ngFor="let part of parts">
-      <ion-row>
+    <ion-row *ngIf="parts.length>0">
+      <ion-col text-right>Total Labor Cost:
+        <b>{{cost()}}</b>
+      </ion-col>
+    </ion-row>
+    <ng-container *ngFor="let part of parts;let idx=index">
+      <ion-row align-items-center no-lines>
         <ion-col>
             {{part.description}}
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row align-items-center>
         <ion-col>
           {{part.cost}}
         </ion-col>
@@ -34,7 +40,9 @@
         </ion-col>
         <ion-col>{{part.cost*part.quantity}}</ion-col>
         <ion-col>
-         
+          <button ion-button icon-only clear type="button" (click)="parts.splice(idx,1)">
+            <ion-icon name="trash"></ion-icon>
+          </button>
         </ion-col>
       </ion-row>
     </ng-container>

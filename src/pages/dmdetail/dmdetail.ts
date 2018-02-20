@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../appstate/app.state';
 import { Observable } from 'rxjs/Rx';
 import { Labor } from '../../components/labor/labor';
+import { Part } from '../../components/parts/parts';
 
 
 @Component({
@@ -13,7 +14,8 @@ import { Labor } from '../../components/labor/labor';
 export class DmdetailPage {
   private index: number;
   private rs: any;
-  private laborarr: Labor[] = []
+  private laborarr: Labor[] = [];
+  private parts: Part[] = [];
   private section: string = "detailView"
   private priority: any = {};
   private wosLen:number;
