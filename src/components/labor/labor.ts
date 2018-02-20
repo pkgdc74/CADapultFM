@@ -23,8 +23,9 @@ export class LaborComponent {
       description:['',Validators.required],
       hours:['',Validators.compose([Validators.required,Validators.min(0)])],
       rate:['',Validators.compose([Validators.required,Validators.min(1)])],
-      date:['',Validators.compose([Validators.required])],
+      date:[new Date().toISOString(),Validators.compose([Validators.required])],
     })
+    //this.laborForm.controls["date"].setValue(new Date().toISOString())
   }
   private setFocus(){
     let element = this.eref.nativeElement.querySelector('textarea');
@@ -37,6 +38,7 @@ export class LaborComponent {
     this.laborarr.push(labor)
     this.laborForm.reset();
     this.setFocus() 
+    this.laborForm.controls["date"].setValue(new Date().toISOString())
   }
   delete(idx){
     this.laborarr.splice(idx,1)
