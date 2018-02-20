@@ -4,7 +4,8 @@ import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 export interface Labor{
   description:string;
   hours:number;
-  rate:number
+  rate:number;
+  date:Date;
 }
 
 @Component({
@@ -21,7 +22,8 @@ export class LaborComponent {
     this.laborForm=this.fb.group({
       description:['',Validators.required],
       hours:['',Validators.compose([Validators.required,Validators.min(0)])],
-      rate:['',Validators.compose([Validators.required,Validators.min(1)])]
+      rate:['',Validators.compose([Validators.required,Validators.min(1)])],
+      date:['',Validators.compose([Validators.required])],
     })
   }
   private setFocus(){
@@ -29,13 +31,12 @@ export class LaborComponent {
     element.focus()
   }
   ngAfterViewInit(){ 
-    this.setFocus()
+    //this.setFocus()
   }
   add(labor){
     this.laborarr.push(labor)
     this.laborForm.reset();
-    this.setFocus()
-    
+    this.setFocus() 
   }
   delete(idx){
     this.laborarr.splice(idx,1)

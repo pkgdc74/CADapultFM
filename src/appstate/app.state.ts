@@ -3,6 +3,8 @@ import { AppSettings } from "../pages/settings/appsettingsstate";
 export interface FMTables{
     readonly priority:any[]
     readonly documents:any[]
+    readonly pmdmstatustypes:any[]
+    
 }
 export interface AppState{
     readonly dms:any[];

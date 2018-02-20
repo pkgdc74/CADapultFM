@@ -17,7 +17,8 @@ export class DmdetailPage {
   private section: string = "detailView"
   private priority: any = {};
   private wosLen:number;
-  private dox:any[]
+  private dox:any[];
+  private statusTypes:any[]
   constructor(public navCtrl: NavController, public navParams: NavParams, private store: Store<AppState>) {
     this.index = this.navParams.get("index")
     this.store.subscribe(data => {
@@ -25,6 +26,7 @@ export class DmdetailPage {
       this.rs=data.dms[this.index]
       data.fmtables["priority"].forEach(itm => this.priority[itm.value] = itm.color)
       this.dox=data.fmtables.documents.filter(x=>x.uid==this.rs.uid || x.uid==this.rs.recurrenceid)
+      this.statusTypes=data.fmtables.pmdmstatustypes
     })
   }
 
