@@ -18,8 +18,8 @@ export class LaborComponent {
   @Output("data")
   laborarrChange=new EventEmitter<Labor[]>()
   private laborForm:FormGroup;
-  private maxDate:string=new Date().getFullYear()+10+""
-  private minDate:string=new Date().getFullYear()-10+""
+  private maxDate:string=""+(new Date().getFullYear()+10)
+  private minDate:string=""+(new Date().getFullYear()-10)
   constructor(private fb:FormBuilder,private eref:ElementRef) {
     this.laborForm=this.fb.group({
       description:['',Validators.required],

@@ -1,0 +1,42 @@
+<form [formGroup]="partForm" (ngSubmit)="add(partForm.value)">
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col>
+        <ion-textarea placeholder="Part Description" formControlName="description"></ion-textarea>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center>
+      <ion-col>
+        <ion-input type="number" formControlName="cost"></ion-input>
+      </ion-col>
+      <ion-col>
+        <ion-input type="number" formControlName="quantity"></ion-input>
+      </ion-col>
+      <ion-col>{{partForm.value.cost*partForm.value.quantity}}</ion-col>
+      <ion-col>
+        <button ion-button type="submit" [disabled]="!partForm.valid">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+    <ng-container *ngFor="let part of parts">
+      <ion-row>
+        <ion-col>
+            {{part.description}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          {{part.cost}}
+        </ion-col>
+        <ion-col>
+          {{part.quantity}}
+        </ion-col>
+        <ion-col>{{part.cost*part.quantity}}</ion-col>
+        <ion-col>
+         
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+</form>
