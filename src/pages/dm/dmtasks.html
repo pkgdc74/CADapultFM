@@ -16,7 +16,7 @@
   </ion-fab>
   <ion-list>
     <ion-item-sliding *ngFor="let wo of wos|async; let i=index">
-      <ion-item no-lines [ngClass]="{'bottom-border': true, 'closed':wo.techstatus=='closed'}" (tap)="showDetail(wo,i)">
+      <ion-item no-lines [ngClass]="{'bottom-border': true, 'closed':wo.techstatus=='Closed'}" (tap)="showDetail(wo,i)">
         <ion-row>
           <ion-col>
             <h1 [style.color]="priority[wo.priority]">{{wo.requestid}}</h1>
