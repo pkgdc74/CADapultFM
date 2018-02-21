@@ -66,12 +66,13 @@ export class DataService {
           if (dms.length > 0) reqs.push(proxy.syncDmsAsync(dms))
           if (pms.length > 0) reqs.push(proxy.syncPmsAsync(pms))
           return Promise.all(reqs).then(x => proxy)
-        }).then((proxy) => Promise.all([proxy.getAppTablesAsync(),proxy.gettechWOAsync()]))
+        }).then((proxy) => Promise.all([proxy.getAppTablesAsync(), proxy.gettechWOAsync()]))
           .then(arr => {
-            let [fmtables,remote]=arr;
+            let [fmtables, remote] = arr;
             this.store.dispatch(new dm.LoadRemote(remote.DMTasks))
             this.store.dispatch(new pm.LoadRemote(remote.PMTasks))
             this.store.dispatch(new fmcommon.LoadTablesAction(fmtables))
+            this.store.dispatch({ type: "APP_STORE_STATE_SAVE", payload: "" })
           }).catch(err => {
             console.log(err)
             this.store.dispatch({ type: "xxx" })

@@ -24,4 +24,15 @@ export class AppEffects {
             }
         })
     })
+    
+    @Effect({ dispatch: false })
+    saveStoreState: Observable<Action> = this.actions.ofType("APP_STORE_STATE_SAVE")
+    .do(action=>{
+        this.store.take(1).subscribe(state=>{
+            this.ds.set("appsettings",{...state.appsettings,password:state.appsettings.password.e()})
+            this.ds.set("dms",state.dms)
+            this.ds.set("pms",state.pms)
+            this.ds.set("fmtables",state.fmtables)
+        })
+    })
 }
