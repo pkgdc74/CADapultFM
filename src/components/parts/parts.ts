@@ -2,6 +2,8 @@ import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 export interface Part{
+  id:number;
+  woid:number;
   description:string;
   cost:number;
   quantity:number;
@@ -12,6 +14,8 @@ export interface Part{
   templateUrl: 'parts.html'
 })
 export class PartsComponent {
+  @Input("readonly")
+  readonly:boolean=false
   @Input("data")
   private parts:Part[]=[]
   @Output("data")

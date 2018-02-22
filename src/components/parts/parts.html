@@ -15,7 +15,7 @@
       </ion-col>
       <ion-col>{{partForm.value.cost*partForm.value.quantity}}</ion-col>
       <ion-col>
-        <button ion-button type="submit" [disabled]="!partForm.valid">
+        <button ion-button type="submit" [disabled]="!partForm.valid || readonly">
           Add
         </button>
       </ion-col>
@@ -40,7 +40,7 @@
         </ion-col>
         <ion-col>{{part.cost*part.quantity}}</ion-col>
         <ion-col>
-          <button ion-button icon-only clear type="button" (click)="parts.splice(idx,1)">
+          <button ion-button icon-only clear type="button" (click)="parts.splice(idx,1)" [disabled]="readonly">
             <ion-icon name="trash"></ion-icon>
           </button>
         </ion-col>

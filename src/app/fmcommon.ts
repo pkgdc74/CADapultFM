@@ -8,7 +8,11 @@ export class LoadTablesAction {
 export const initfmtables: FMTables = {
     priority: [],
     documents:[],
-    pmdmstatustypes:[]
+    pmdmstatustypes:[],
+    dmlabor:[],
+    dmpart:[],
+    pmlabor:[],
+    pmpart:[]
 }
 export type Actions = LoadTablesAction
 export function fmtablesreducer(state: FMTables = initfmtables, action: Actions) {

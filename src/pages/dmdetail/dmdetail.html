@@ -29,11 +29,10 @@
             Edit / Update
           </ion-card-header>
           <ion-card-content>
-
             <ion-item>
               <ion-label>Tech Status</ion-label>
-              <ion-select [(ngModel)]="gaming">
-                <ion-option *ngFor="let status of statusTypes" [value]="status.type" [selected]="status.type==rs.techstatus">
+              <ion-select [(ngModel)]="rs.techstatus">
+                <ion-option *ngFor="let status of statusTypes" [value]="status.type" >
                   {{status.type}}
                 </ion-option>
               </ion-select>
@@ -41,12 +40,13 @@
             <ion-item>
               <ion-textarea placeholder="Tech comments" rows="2"></ion-textarea>
             </ion-item>
-            <ion-item>
-              <button ion-button color="primary" item-end icon-left outline>
-                <ion-icon name='ios-send'></ion-icon>Save
-              </button>
-            </ion-item>
-
+            <ng-container *ngIf="rs.techstatus!='Closed'">
+              <ion-item >
+                <button ion-button color="primary" item-end icon-left outline (click)="saveState(rs)">
+                  <ion-icon name='ios-send'></ion-icon>Save
+                </button>
+              </ion-item>
+            </ng-container>
           </ion-card-content>
         </ion-card>
         <ion-card>
@@ -87,13 +87,13 @@
 
       </div>
       <div *ngSwitchCase="'laborView'">
-        <labor [(data)]="laborarr"></labor>
+        <labor [(data)]="labor" [readonly]="rs.techstatus=='Closed'"></labor>
       </div>
       <div *ngSwitchCase="'partsView'">
-        <parts [(data)]="parts"></parts>
+        <parts [(data)]="parts" [readonly]="rs.techstatus=='Closed'"></parts>
       </div>
-      <div *ngSwitchCase="'attachmentsView'">
-        <documents [dox]="dox"></documents>
+      <div *ngSwitchCase="'attachmentsView'" >
+        <documents [dox]="dox" [readonly]="rs.techstatus=='Closed'"></documents>
       </div>
     </div>
   </div>

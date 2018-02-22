@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter, ElementRef } from '@angular/cor
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 export interface Labor{
+  id:number;
+  woid:number;
   description:string;
   hours:number;
   rate:number;
@@ -13,6 +15,8 @@ export interface Labor{
   templateUrl: 'labor.html'
 })
 export class LaborComponent {
+  @Input("readonly")
+  readonly:boolean=false
   @Input("data")
   laborarr:Labor[]=[]
   @Output("data")
@@ -27,7 +31,6 @@ export class LaborComponent {
       rate:['',Validators.compose([Validators.required,Validators.min(1)])],
       date:[new Date().toISOString(),Validators.compose([Validators.required])],
     })
-    //this.laborForm.controls["date"].setValue(new Date().toISOString())
   }
   private setFocus(){
     let element = this.eref.nativeElement.querySelector('textarea');

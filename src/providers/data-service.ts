@@ -29,13 +29,19 @@ export class DataService {
     Promise.all([this.get("dms"), this.get("pms"), apps, this.get("fmtables")]).then((data) => {
       this.store.dispatch(new dm.LoadLoacal(data[0] ? data[0] : []));
       this.store.dispatch(new pm.LoadLoacal(data[1] ? data[1] : []));
-      this.store.dispatch(new app.AppSettingsLoad(data[2] ? data[2] : app.defaultAppSettings));
+      let settings = data[2] ? data[2] : app.defaultAppSettings
+      this.store.dispatch(new app.AppSettingsLoad(settings));
       this.store.dispatch(new fmcommon.LoadTablesAction(data[3] ? data[3] : fmcommon.initfmtables))
+      return settings
     })
+      .then(settings => {
+        if (settings.offline || settings.status == 0) throw new Error("offline or not connected")
+      })
       .then(() => this.rmi.getProxy()).then(proxy => proxy.getAppTablesAsync()).then((fmtables) => {
         this.store.dispatch(new fmcommon.LoadTablesAction(fmtables))
       })
       .then(() => this.reload())
+      .catch(err=>console.log(err))
   }
 
   get(key: string): Promise<any> {

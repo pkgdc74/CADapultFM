@@ -17,7 +17,7 @@
       </ion-col>
       <ion-col>{{laborForm.value.hours*laborForm.value.rate}}</ion-col>
       <ion-col>
-        <button ion-button type="submit" [disabled]="!laborForm.valid">Add</button>
+        <button ion-button type="submit" [disabled]="readonly || !laborForm.valid">Add</button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="laborarr.length>0">
@@ -35,7 +35,7 @@
         <ion-col>{{labor.rate}}</ion-col>
         <ion-col>{{labor.hours*labor.rate}}</ion-col>
         <ion-col>
-          <button ion-button icon-only clear type="button" (click)="delete(idx)">
+          <button ion-button icon-only clear type="button" (click)="delete(idx)" [disabled]="readonly">
             <ion-icon name="trash"></ion-icon>
           </button>
         </ion-col>

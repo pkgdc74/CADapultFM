@@ -12,6 +12,9 @@ import { MimeTypes } from '../../providers/MimeTypes';
   templateUrl: 'documents.html'
 })
 export class DocumentsComponent {
+  @Input("readonly")
+  readonly:boolean=false
+
   @Input("dox")
   private documents: any[] = []
   constructor(private rmi: RMIService, private file: File, private platform: Platform, private fo: FileOpener, private mime: MimeTypes, private toastCtrl: ToastController) {
