@@ -27,6 +27,7 @@ import { DmdetailPage } from '../pages/dmdetail/dmdetail';
 import { File } from "@ionic-native/file";
 import { FileOpener } from "@ionic-native/file-opener";
 import { MimeTypes } from '../providers/MimeTypes';
+import { syncQueueReducer, SyncQueueEffects } from '../reducers/syncqueue';
 
 
 @NgModule({
@@ -37,8 +38,8 @@ import { MimeTypes } from '../providers/MimeTypes';
     BrowserModule,
     IonicModule.forRoot(MyApp), ComponentsModule,
     IonicStorageModule.forRoot(),
-    StoreModule.forRoot({dms:dmreducer,pms:pmreducer,appsettings:appsettingsreducer,fmtables:fmtablesreducer}),
-    EffectsModule.forRoot([DMEffects,AppEffects]),
+    StoreModule.forRoot({dms:dmreducer,pms:pmreducer,appsettings:appsettingsreducer,fmtables:fmtablesreducer,syncqueue:syncQueueReducer}),
+    EffectsModule.forRoot([DMEffects,AppEffects,SyncQueueEffects]),
     PipesModule
   ],
   bootstrap: [IonicApp],

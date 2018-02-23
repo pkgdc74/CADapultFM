@@ -14,4 +14,5 @@ export interface AppState{
     readonly pms:any[];
     readonly appsettings:AppSettings;
     readonly fmtables:FMTables;
+    readonly syncqueue:any[]
 }
