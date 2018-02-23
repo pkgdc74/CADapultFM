@@ -1,5 +1,8 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../appstate/app.state';
+import { SyncQueueAdd } from '../../reducers/syncqueue';
 
 export interface Part{
   id:number;
@@ -22,7 +25,7 @@ export class PartsComponent {
   private partsChange=new EventEmitter<Part[]>()
 
   private partForm:FormGroup;
-  constructor(private fb:FormBuilder,private eref:ElementRef) {
+  constructor(private fb:FormBuilder,private eref:ElementRef,private store:Store<AppState>) {
     this.partForm=fb.group({
       description:['',Validators.required],
       cost:['',Validators.compose([Validators.required,Validators.min(0)])],
@@ -37,5 +40,9 @@ export class PartsComponent {
   }
   cost(){
     return this.parts.reduce((s,itm)=>{s+=itm.cost*itm.quantity;return s},0)
+  }
+  delete(idx){
+    this.store.dispatch(new SyncQueueAdd({name:"LABOR_DELETE",payload:this.parts[idx].id}))
+    this.parts.splice(idx,1)
   }
 }

@@ -40,7 +40,7 @@
         </ion-col>
         <ion-col>{{part.cost*part.quantity}}</ion-col>
         <ion-col>
-          <button ion-button icon-only clear type="button" (click)="parts.splice(idx,1)" [disabled]="readonly">
+          <button ion-button icon-only clear type="button" (click)="delete(idx)" [disabled]="readonly">
             <ion-icon name="trash"></ion-icon>
           </button>
         </ion-col>
