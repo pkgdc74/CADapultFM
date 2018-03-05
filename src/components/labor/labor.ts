@@ -1,14 +1,7 @@
 import { Component, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { PMPartslabor } from '../../appstate/app.state';
 
-export interface Labor{
-  id:number;
-  woid:number;
-  description:string;
-  hours:number;
-  rate:number;
-  date:Date;
-}
 
 @Component({
   selector: 'labor',
@@ -18,9 +11,12 @@ export class LaborComponent {
   @Input("readonly")
   readonly:boolean=false
   @Input("data")
-  laborarr:Labor[]=[]
-  @Output("data")
-  laborarrChange=new EventEmitter<Labor[]>()
+  laborarr:PMPartslabor[]=[]
+  @Output()
+  private addlabor=new EventEmitter<PMPartslabor>()
+  @Output()
+  private deletelabor=new EventEmitter<PMPartslabor>()
+
   private laborForm:FormGroup;
   private maxDate:string=""+(new Date().getFullYear()+10)
   private minDate:string=""+(new Date().getFullYear()-10)
@@ -29,7 +25,7 @@ export class LaborComponent {
       description:['',Validators.required],
       hours:['',Validators.compose([Validators.required,Validators.min(0)])],
       rate:['',Validators.compose([Validators.required,Validators.min(1)])],
-      date:[new Date().toISOString(),Validators.compose([Validators.required])],
+      workingdate:[new Date().toISOString(),Validators.compose([Validators.required])],
     })
   }
   private setFocus(){
@@ -37,17 +33,16 @@ export class LaborComponent {
     element.focus()
   }
   ngAfterViewInit(){ 
-    //this.setFocus()
+    
   }
   add(labor){
-    this.laborarr.push(labor)
+    this.addlabor.emit(labor)
     this.laborForm.reset();
     this.setFocus() 
-    this.laborForm.controls["date"].setValue(new Date().toISOString())
+    this.laborForm.controls["workingdate"].setValue(new Date().toISOString())
   }
   delete(idx){
-    this.laborarr.splice(idx,1)
-    this.setFocus()
+    this.deletelabor.emit(this.laborarr[idx])
   }
   cost(){
     return this.laborarr.reduce((s,itm)=>{s+=itm.rate*itm.hours;return s},0)

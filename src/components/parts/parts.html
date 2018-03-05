@@ -1,5 +1,4 @@
-<form [formGroup]="partForm" (ngSubmit)="add(partForm.value);
-">
+<form [formGroup]="partForm" (ngSubmit)="add(partForm.value);">
   <ion-grid>
     <ion-row align-items-center no-lines>
       <ion-col>
@@ -8,12 +7,12 @@
     </ion-row>
     <ion-row align-items-center no-lines>
       <ion-col>
-        <ion-input type="number" placeholder="cost" formControlName="cost"></ion-input>
+        <ion-input type="number" placeholder="cost" formControlName="partcost"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-input type="number" placeholder="quantity" formControlName="quantity"></ion-input>
+        <ion-input type="number" placeholder="quantity" formControlName="partqty"></ion-input>
       </ion-col>
-      <ion-col>{{partForm.value.cost*partForm.value.quantity}}</ion-col>
+      <ion-col>{{partForm.value.partcost*partForm.value.partqty}}</ion-col>
       <ion-col>
         <button ion-button type="submit" [disabled]="!partForm.valid || readonly">
           Add
@@ -33,12 +32,12 @@
       </ion-row>
       <ion-row align-items-center>
         <ion-col>
-          {{part.cost}}
+          {{part.partcost}}
         </ion-col>
         <ion-col>
-          {{part.quantity}}
+          {{part.partqty}}
         </ion-col>
-        <ion-col>{{part.cost*part.quantity}}</ion-col>
+        <ion-col>{{part.partcost*part.partqty}}</ion-col>
         <ion-col>
           <button ion-button icon-only clear type="button" (click)="delete(idx)" [disabled]="readonly">
             <ion-icon name="trash"></ion-icon>

@@ -87,10 +87,10 @@
 
       </div>
       <div *ngSwitchCase="'laborView'">
-        <labor [(data)]="labor" [readonly]="rs.techstatus=='Closed'"></labor>
+        <labor [data]="labor()" (addlabor)="addLabor($event)" (deletelabor)="deleteLabor($event)" ></labor>
       </div>
       <div *ngSwitchCase="'partsView'">
-        <parts [(data)]="parts" [readonly]="rs.techstatus=='Closed'"></parts>
+        <parts [data]="parts()"  (addpart)="addPart($event)" (deletepart)="deletePart($event)"></parts>
       </div>
       <div *ngSwitchCase="'attachmentsView'" >
         <documents [dox]="dox" [readonly]="rs.techstatus=='Closed'"></documents>

@@ -11,7 +11,7 @@ import { DataService } from "../providers/data-service";
 export interface ICommand {
     syncid?: number;
     readonly name: string;
-    readonly payload: any;
+    payload: any;
 }
 
 export class SyncQueueAdd implements Action {
@@ -69,7 +69,6 @@ export class SyncQueueEffects {
                     let filtered = commands.filter(cmd => {
                         return res.findIndex(x=> x.syncid==cmd.syncid && x.status=="OK")==-1?true:false
                     })
-                    console.log(filtered)
                     this.ds.set("syncqueue", filtered)
                 }).catch(err=>console.log(err))
             })

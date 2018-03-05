@@ -41,7 +41,7 @@ export class DataService {
         this.store.dispatch(new fmcommon.LoadTablesAction(fmtables))
       })
       .then(() => this.reload())
-      .catch(err=>console.log(err))
+      .catch(err => console.log(err))
   }
 
   get(key: string): Promise<any> {
@@ -71,6 +71,15 @@ export class DataService {
           let reqs = [], proxy = wos[2]
           if (dms.length > 0) reqs.push(proxy.syncDmsAsync(dms))
           if (pms.length > 0) reqs.push(proxy.syncPmsAsync(pms))
+          reqs.push(this.get("syncqueue").then(commands => {
+            if (commands == null || commands.length == 0) return
+            return proxy.processCommandsAsync(commands).then(res => {
+              let filtered = commands.filter(cmd => {
+                return res.findIndex(x => x.syncid == cmd.syncid && x.status == "OK") == -1 ? true : false
+              })
+              this.set("syncqueue", filtered)
+            }).catch(err => console.log(err))
+          }))
           return Promise.all(reqs).then(x => proxy)
         }).then((proxy) => Promise.all([proxy.getAppTablesAsync(), proxy.gettechWOAsync()]))
           .then(arr => {
