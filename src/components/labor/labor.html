@@ -13,7 +13,7 @@
         <ion-input type="number" placeholder="Hours" formControlName="hours"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-input type="number" placeholder="Rate" formControlName="rate"></ion-input>
+        <ion-input type="number" placeholder="Rate" formControlName="rate" [value]="billrate"></ion-input>
       </ion-col>
       <ion-col>{{laborForm.value.hours*laborForm.value.rate}}</ion-col>
       <ion-col>

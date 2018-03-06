@@ -8,6 +8,8 @@ import { PMPartslabor } from '../../appstate/app.state';
   templateUrl: 'labor.html'
 })
 export class LaborComponent {
+  @Input()
+  billrate:number=0;
   @Input("readonly")
   readonly:boolean=false
   @Input("data")
@@ -18,11 +20,11 @@ export class LaborComponent {
   private deletelabor=new EventEmitter<PMPartslabor>()
 
   private laborForm:FormGroup;
-  private maxDate:string=""+(new Date().getFullYear()+10)
+  private maxDate:string=new Date().toISOString()
   private minDate:string=""+(new Date().getFullYear()-10)
   constructor(private fb:FormBuilder,private eref:ElementRef) {
     this.laborForm=this.fb.group({
-      description:['',Validators.required],
+      description:[''],
       hours:['',Validators.compose([Validators.required,Validators.min(0)])],
       rate:['',Validators.compose([Validators.required,Validators.min(1)])],
       workingdate:[new Date().toISOString(),Validators.compose([Validators.required])],
@@ -39,6 +41,7 @@ export class LaborComponent {
     this.addlabor.emit(labor)
     this.laborForm.reset();
     this.setFocus() 
+    this.laborForm.controls["rate"].setValue(this.billrate)
     this.laborForm.controls["workingdate"].setValue(new Date().toISOString())
   }
   delete(idx){

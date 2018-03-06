@@ -9,7 +9,8 @@ export const initfmtables: FMTables = {
     priority: [],
     documents: [],
     pmdmstatustypes: [],
-    pmpartslabor: []
+    pmpartslabor: [],
+    user:{}
 }
 
 export type FMTablesActions = LoadTablesAction

@@ -87,7 +87,7 @@
 
       </div>
       <div *ngSwitchCase="'laborView'">
-        <labor [data]="labor()" (addlabor)="addLabor($event)" (deletelabor)="deleteLabor($event)" ></labor>
+        <labor [billrate]="user.billrate" [data]="labor()" (addlabor)="addLabor($event)" (deletelabor)="deleteLabor($event)" ></labor>
       </div>
       <div *ngSwitchCase="'partsView'">
         <parts [data]="parts()"  (addpart)="addPart($event)" (deletepart)="deletePart($event)"></parts>
