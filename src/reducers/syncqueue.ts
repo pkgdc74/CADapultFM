@@ -22,11 +22,15 @@ export class SyncQueueRemove implements Action {
     readonly type: string = "SYNCQUEUE_REMOVE";
     constructor(public command: ICommand) { }
 }
+export class SyncQueueLoad implements Action {
+    readonly type: string = "SYNCQUEUE_LOAD";
+    constructor(public command:ICommand[]) { }
+}
 
-export type SyncQueueActions = SyncQueueAdd | SyncQueueRemove
+export type SyncQueueActions = SyncQueueAdd | SyncQueueRemove | SyncQueueLoad 
 
 const initState: any[] = [];
-export function syncQueueReducer(state: any[] = initState, action: SyncQueueActions) {
+export function syncQueueReducer(state: any[] = initState, action) {
     switch (action.type) {
         case "SYNCQUEUE_ADD": {
             action.command.syncid = new Date().getTime()
@@ -34,6 +38,9 @@ export function syncQueueReducer(state: any[] = initState, action: SyncQueueActi
         }
         case "SYNCQUEUE_REMOVE": {
             return state.filter(x => x.syncid != action.command.syncid)
+        }
+        case "SYNCQUEUE_LOAD":{
+            return action.commands
         }
         case "SYNCQUEUE_PROCESS": {
             return state
@@ -47,30 +54,32 @@ export function syncQueueReducer(state: any[] = initState, action: SyncQueueActi
 @Injectable()
 export class SyncQueueEffects {
     private appsettings: AppSettings
+    private syncqueue:any[]
     constructor(private store: Store<AppState>, private actions: Actions, private rmi: RMIService, private ds: DataService) {
         this.store.select("appsettings").subscribe(s => this.appsettings = s)
+        this.store.select("syncqueue").subscribe(x=>{
+            this.syncqueue=x
+            this.ds.set("syncqueue",x)
+        })
     }
     @Effect({ dispatch: false })
     add: Observable<Action> = this.actions.ofType<SyncQueueActions>("SYNCQUEUE_ADD")
         .do(action => {
-            this.ds.get("syncqueue")
-                .then(data => data == null ? [action.command] : [...data, action.command])
-                .then(data => this.ds.set("syncqueue", data))
-                .then(x => this.store.dispatch({ type: "SYNCQUEUE_PROCESS" }))
+            this.rmi.getProxy().then(proxy=>proxy.processCommandsAsync([action.command])).then(res=>{
+                if(res[0].status=="OK")
+                    this.store.dispatch({type:"SYNCQUEUE_REMOVE",command:action.command})
+            }).catch(err=>console.log(err))
         })
     @Effect({ dispatch: false })
     process: Observable<Action> = this.actions.ofType<SyncQueueActions>("SYNCQUEUE_PROCESS")
         .do(action => {
             if (this.appsettings.offline) return;
-            Promise.all([this.ds.get("syncqueue"), this.rmi.getProxy()])
-            .then(res => {
-                let [commands, proxy] = res;
-                proxy.processCommandsAsync(commands).then(res => {
-                    let filtered = commands.filter(cmd => {
-                        return res.findIndex(x=> x.syncid==cmd.syncid && x.status=="OK")==-1?true:false
-                    })
-                    this.ds.set("syncqueue", filtered)
-                }).catch(err=>console.log(err))
-            })
+            this.rmi.getProxy().then(proxy=>proxy.processCommandsAsync(this.syncqueue))
+            .then(res=>{
+                let filtered=this.syncqueue.filter(cmd => {
+                    return res.findIndex(x=> x.syncid==cmd.syncid && x.status=="OK")==-1?true:false
+                })
+                this.store.dispatch({type:"SYNCQUEUE_LOAD",commands:filtered})
+            }).catch(err=>console.log(err))
         })
 }

@@ -44,39 +44,26 @@ export class DmdetailPage {
     else
       this.navCtrl.pop({ animate: true, animation: "ios-transition", direction: "back", duration: 300 })
   }
-  private userTouched(wo) {
-    if (!wo.userTouched)
-      wo.userTouched = {}
-  }
-  toggleWip(wo) {
-    this.userTouched(wo)
-    wo.userTouched.wips = wo.userTouched.wips || []
-    wo.userTouched.localWipSt = wo.userTouched.localWipSt || 0
-    if (wo.userTouched.localWipSt > 0) {
-      wo.userTouched.wips.push({ "st": wo.userTouched.localWipSt, "et": new Date().getTime() })
-      wo.userTouched.localWipSt = 0;
-      wo.userTouched.labor = wo.userTouched.wips.reduce((s, x) => { return s + (x.et - x.st) }, 0)
-    } else {
-      wo.userTouched.localWipSt = new Date().getTime()
-    }
-    this.saveState(wo)
-  }
+  
   parts() {
     return this.partlabor.filter(row => row.type == "Part" && row.maintid == this.rs.requestid)
   }
   labor() {
     return this.partlabor.filter(row => row.type == "Labor" && row.maintid == this.rs.requestid)
   }
-  closeWO(wo) {
-    this.userTouched(wo)
-    wo.techstatus = 'Closed'
-    if (wo.userTouched.localWipSt && wo.userTouched.localWipSt > 0)
-      this.toggleWip(wo)
-    this.saveState(wo)
-  }
-
+  
+  private techcomments:string;
   saveState(wo) {
-    this.store.dispatch(new DM.Save(wo))
+    let tmp={...wo,techcomments:this.techcomments}
+    wo.techcomments=this.techcomments+"<br>"+wo.techcomments
+    this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "DM_SAVE", payload: tmp } })
+    if(wo.techstatus=="Closed"){
+      this.store.dispatch(new DM.Close(wo))
+      this.navCtrl.pop({ animate: true, animation: "ios-transition", direction: "back", duration: 300 })
+    }else{
+      this.store.dispatch(new DM.Save(wo))
+    }
+    this.techcomments=""
   }
 
   addPart(part: PMPartslabor) {

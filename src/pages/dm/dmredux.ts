@@ -30,26 +30,18 @@ export class Save implements Action {
     readonly type = DMActionsTypes.DM_SAVE
     constructor(public payload: any) { }
 }
+export class Close implements Action {
+    readonly type = DMActionsTypes.DM_CLOSE
+    constructor(public payload: any) { }
+}
 
-export type DMActions = LoadLoacal | LoadRemote | Add | Save
+export type DMActions = LoadLoacal | LoadRemote | Add | Save | Close
 
 export function dmreducer(state: any[] = [], action: DMActions) {
     switch (action.type) {
         case DMActionsTypes.DM_LOAD_LOCAL: {
             return action.payload;
         }
-        // case DMActionsTypes.DM_LOAD_REMOTE: {
-        //     let remote = action.payload
-        //     state.forEach(local => {
-        //         remote.forEach((remote, i, arr) => {
-        //             if (remote.requestid === local.requestid && local.userTouched)
-        //                 arr[i] = local
-        //         })
-        //         if (local.requestid === -1)
-        //             remote.push(local)
-        //     })
-        //     return remote
-        // }
         case DMActionsTypes.DM_ADD: {
             return [...state, action.payload]
         }
@@ -60,6 +52,9 @@ export function dmreducer(state: any[] = [], action: DMActions) {
                     : item;
             });
             return cs;
+        }
+        case DMActionsTypes.DM_CLOSE: {
+            return state.filter(itm=>itm.requestid!=action.payload.requestid)
         }
         default: {
             return state;

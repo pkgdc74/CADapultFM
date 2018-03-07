@@ -32,21 +32,20 @@
             <ion-item>
               <ion-label>Tech Status</ion-label>
               <ion-select [(ngModel)]="rs.techstatus">
-                <ion-option *ngFor="let status of statusTypes" [value]="status.type" >
+                <ion-option *ngFor="let status of statusTypes" [value]="status.type">
                   {{status.type}}
                 </ion-option>
               </ion-select>
             </ion-item>
             <ion-item>
-              <ion-textarea placeholder="Tech comments" rows="2"></ion-textarea>
+              <ion-textarea placeholder="Tech comments" rows="2" [(ngModel)]="techcomments"></ion-textarea>
+              <div>{{rs.techcomments}}</div>
             </ion-item>
-            <ng-container *ngIf="rs.techstatus!='Closed'">
-              <ion-item >
-                <button ion-button color="primary" item-end icon-left outline (click)="saveState(rs)">
-                  <ion-icon name='ios-send'></ion-icon>Save
-                </button>
-              </ion-item>
-            </ng-container>
+            <ion-item>
+              <button ion-button color="primary" item-end icon-left outline (click)="saveState(rs)">
+                <ion-icon name='ios-send'></ion-icon>Save
+              </button>
+            </ion-item>
           </ion-card-content>
         </ion-card>
         <ion-card>
@@ -79,20 +78,20 @@
               {{rs.description}}
             </p>
             <h2>Tech Comments</h2>
-            <p>
-              {{rs.techcomments}}
+            <p [innerHTML]="rs.techcomments">
+
             </p>
           </ion-card-content>
         </ion-card>
 
       </div>
       <div *ngSwitchCase="'laborView'">
-        <labor [billrate]="user.billrate" [data]="labor()" (addlabor)="addLabor($event)" (deletelabor)="deleteLabor($event)" ></labor>
+        <labor [billrate]="user.billrate" [data]="labor()" (addlabor)="addLabor($event)" (deletelabor)="deleteLabor($event)"></labor>
       </div>
       <div *ngSwitchCase="'partsView'">
-        <parts [data]="parts()"  (addpart)="addPart($event)" (deletepart)="deletePart($event)"></parts>
+        <parts [data]="parts()" (addpart)="addPart($event)" (deletepart)="deletePart($event)"></parts>
       </div>
-      <div *ngSwitchCase="'attachmentsView'" >
+      <div *ngSwitchCase="'attachmentsView'">
         <documents [dox]="dox" [readonly]="rs.techstatus=='Closed'"></documents>
       </div>
     </div>

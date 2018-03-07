@@ -33,7 +33,7 @@
         <ion-col>{{labor.workingdate|date:'MM/dd/yyyy'}}</ion-col>
         <ion-col>{{labor.hours}}</ion-col>
         <ion-col>{{labor.rate}}</ion-col>
-        <ion-col>{{labor.hours*labor.rate}}</ion-col>
+        <ion-col>{{labor.hours*labor.rate|number:'1.0-2'}}</ion-col>
         <ion-col>
           <button ion-button icon-only clear type="button" (click)="delete(idx)" [disabled]="readonly">
             <ion-icon name="trash"></ion-icon>

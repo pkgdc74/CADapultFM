@@ -10,8 +10,9 @@ export const initfmtables: FMTables = {
     documents: [],
     pmdmstatustypes: [],
     pmpartslabor: [],
+    pmdmrequestswip:[],
     user:{},
-    pmdmrequestswip:[]
+    appvars:{}
 }
 
 export type FMTablesActions = LoadTablesAction

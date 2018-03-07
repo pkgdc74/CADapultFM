@@ -48,6 +48,6 @@ export class LaborComponent {
     this.deletelabor.emit(this.laborarr[idx])
   }
   cost(){
-    return this.laborarr.reduce((s,itm)=>{s+=itm.rate*itm.hours;return s},0)
+    return this.laborarr.reduce((s,itm)=>{s+=itm.rate*itm.hours;return s},0).toFixed(2)
   }
 }

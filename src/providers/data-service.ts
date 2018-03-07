@@ -70,7 +70,7 @@ export class DataService {
               let filtered = commands.filter(cmd => {
                 return res.findIndex(x => x.syncid == cmd.syncid && x.status == "OK") == -1 ? true : false
               })
-              this.set("syncqueue", filtered)
+              this.store.dispatch({type:"SYNCQUEUE_LOAD",commands:filtered})
             }).catch(err => console.log(err))
           })
           return oncomplete.then(x => proxy)
