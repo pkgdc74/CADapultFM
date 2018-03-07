@@ -20,6 +20,7 @@ export interface FMTables {
     readonly pmdmstatustypes: any[]
     readonly pmpartslabor: PMPartslabor[]
     readonly user:any;
+    readonly pmdmrequestswip:any[]
 }
 export interface AppState {
     readonly dms: any[];

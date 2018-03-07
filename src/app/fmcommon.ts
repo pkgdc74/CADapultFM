@@ -10,7 +10,8 @@ export const initfmtables: FMTables = {
     documents: [],
     pmdmstatustypes: [],
     pmpartslabor: [],
-    user:{}
+    user:{},
+    pmdmrequestswip:[]
 }
 
 export type FMTablesActions = LoadTablesAction
@@ -26,6 +27,11 @@ export function fmtablesreducer(state: FMTables = initfmtables, action: FMTables
         }
         case "FMCOMMON_TABLES_DELETEROW": {
             let x = state[action.payload.table].filter((i, idx) => idx != action.payload.idx)
+            return { ...state, [action.payload.table]: x }
+        }
+        case "FMCOMMON_TABLES_UPDATEROW": {
+            let x = [...state[action.payload.table]]
+            x[action.payload.idx]=action.payload.row
             return { ...state, [action.payload.table]: x }
         }
         default:

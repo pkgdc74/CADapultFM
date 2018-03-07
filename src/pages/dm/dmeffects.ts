@@ -9,24 +9,33 @@ import { Save } from "./dmredux";
 
 @Injectable()
 export class DMEffects {
+    private dms: any[]
     constructor(private actions: Actions, private ds: DataService,
         private store: Store<AppState>, private rmi: RMIService) {
-    }
+            this.store.select(x=>x.dms).subscribe(dms=>this.dms=dms)
+            this.store.select("dms").subscribe(dms=>this.dms=dms)
 
+    }
     @Effect({ dispatch: false })
-    save: Observable<Action> = this.actions.ofType<Save>("DM_SAVE")
+    save: Observable<Action> = this.actions.ofType("DM_SAVE")
         .do(action => {
-            this.store.take(1).subscribe((store) => {
-                this.ds.set("dms", store.dms)
-                let wo: any = action.payload
-                if(!store.appsettings.offline)
-                this.rmi.getProxy().then(proxy=>{
-                    return proxy.saveDMAsync(wo.requestid, wo.techstatus, wo.techcomments)
-                }).then(x => {
-                    //this.ds.reload()
-                })
+            this.ds.set("dms",this.dms)
+        })    
+
+    // @Effect({ dispatch: false })
+    // save: Observable<Action> = this.actions.ofType<Save>("DM_SAVE")
+    //     .do(action => {
+    //         this.store.take(1).subscribe((store) => {
+    //             this.ds.set("dms", store.dms)
+    //             let wo: any = action.payload
+    //             if(!store.appsettings.offline)
+    //             this.rmi.getProxy().then(proxy=>{
+    //                 return proxy.saveDMAsync(wo.requestid, wo.techstatus, wo.techcomments)
+    //             }).then(x => {
+    //                 //this.ds.reload()
+    //             })
             
-            })
-        })
+    //         })
+    //     })
 
 }

@@ -38,18 +38,18 @@ export function dmreducer(state: any[] = [], action: DMActions) {
         case DMActionsTypes.DM_LOAD_LOCAL: {
             return action.payload;
         }
-        case DMActionsTypes.DM_LOAD_REMOTE: {
-            let remote = action.payload
-            state.forEach(local => {
-                remote.forEach((remote, i, arr) => {
-                    if (remote.requestid === local.requestid && local.userTouched)
-                        arr[i] = local
-                })
-                if (local.requestid === -1)
-                    remote.push(local)
-            })
-            return remote
-        }
+        // case DMActionsTypes.DM_LOAD_REMOTE: {
+        //     let remote = action.payload
+        //     state.forEach(local => {
+        //         remote.forEach((remote, i, arr) => {
+        //             if (remote.requestid === local.requestid && local.userTouched)
+        //                 arr[i] = local
+        //         })
+        //         if (local.requestid === -1)
+        //             remote.push(local)
+        //     })
+        //     return remote
+        // }
         case DMActionsTypes.DM_ADD: {
             return [...state, action.payload]
         }

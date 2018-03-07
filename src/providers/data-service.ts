@@ -63,15 +63,8 @@ export class DataService {
     if (this.appsettings == null) return
     if (this.appsettings.status == 1 && !this.appsettings.offline) {
       this.subscription = this.engine.subscribe((x) => {
-        Promise.all([this.get("dms"), this.get("pms"), this.rmi.getProxy()]).then(wos => {
-          let dms = wos[0] || []
-          let pms = wos[1] || []
-          dms = dms.filter(wo => wo.userTouched ? true : false)
-          pms = pms.filter(wo => wo.userTouched ? true : false)
-          let reqs = [], proxy = wos[2]
-          if (dms.length > 0) reqs.push(proxy.syncDmsAsync(dms))
-          if (pms.length > 0) reqs.push(proxy.syncPmsAsync(pms))
-          reqs.push(this.get("syncqueue").then(commands => {
+        this.rmi.getProxy().then(proxy => {
+          let oncomplete=this.get("syncqueue").then(commands => {
             if (commands == null || commands.length == 0) return
             return proxy.processCommandsAsync(commands).then(res => {
               let filtered = commands.filter(cmd => {
@@ -79,12 +72,12 @@ export class DataService {
               })
               this.set("syncqueue", filtered)
             }).catch(err => console.log(err))
-          }))
-          return Promise.all(reqs).then(x => proxy)
+          })
+          return oncomplete.then(x => proxy)
         }).then((proxy) => Promise.all([proxy.getAppTablesAsync(), proxy.gettechWOAsync()]))
           .then(arr => {
             let [fmtables, remote] = arr;
-            this.store.dispatch(new dm.LoadRemote(remote.DMTasks))
+            this.store.dispatch(new dm.LoadLoacal(remote.DMTasks))
             this.store.dispatch(new pm.LoadRemote(remote.PMTasks))
             this.store.dispatch(new fmcommon.LoadTablesAction(fmtables))
             this.store.dispatch({ type: "APP_STORE_STATE_SAVE", payload: "" })
