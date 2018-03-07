@@ -9,11 +9,11 @@
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!(appsettings|async).offline">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-fab bottom right>
+  <!--<ion-fab bottom right>
     <button ion-fab mini>
       <ion-icon name="add"></ion-icon>
     </button>
-  </ion-fab>
+  </ion-fab>-->
   <ion-list>
     <ion-item-sliding *ngFor="let wo of wos|async; let i=index">
       <ion-item no-lines [ngClass]="{'bottom-border': true, 'closed':wo.techstatus=='Closed'}" (tap)="showDetail(wo,i)">
