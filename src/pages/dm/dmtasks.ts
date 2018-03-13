@@ -42,47 +42,64 @@ export class DMTasksPage {
       }, {})
     })
   }
-  
+
   toDateString(date: Date) {
     return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
   }
-  toggleWip(wo) {
-    if (this.wipAt[wo.requestid]) {
-      let idx = this.wips.findIndex(rs => rs.requestid == wo.requestid && !rs.endtime)
-      this.wips[idx].endtime = new Date().toLocaleString().replace(",","")
-      this.store.dispatch({ type: "FMCOMMON_TABLES_UPDATEROW", payload: { table: "pmdmrequestswip", idx: idx, row: this.wips[idx] } })
-      let diff = new Date(this.wips[idx].endtime).getTime() - new Date(this.wips[idx].starttime).getTime()
-      diff = diff / (60 * 60 * 1000)
-      let row = {
-        id: -1, maintid: wo.requestid, mainttype: "DMR", type: "Labor", hours: diff.toFixed(2), rate: this.fmtables.user.billrate,
-        description: "added as WIP hrs", partcost: 0, partqty: 0, workingdate: this.toDateString(new Date()), uuid: new Date().getTime() + wo.requestid
-      }
-      this.store.dispatch({ type: "FMCOMMON_TABLES_ADDROW", payload: { table: "pmpartslabor", row: row }})
-      this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "PMPARTSLABOR_ADD", payload: row } })
-      this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "PMDMREQUESTSWIP_SAVE", payload: this.wips[idx] } })
-      if(wo.techstatus!="Closed")
-        wo.techstatus="Open"
-    }else if(wo.techstatus!="Closed"){
-      wo.techstatus=this.fmtables.appvars.PMDMWIPTechStatusValue||wo.techstatus
-      let row={id:-1,requestid: wo.requestid, module: "DM", technician: this.fmtables.user.username, starttime: new Date().toLocaleString().replace(",",""),endtime:null,uuid:new Date().getTime()+wo.requestid}
-      this.store.dispatch({ type: "FMCOMMON_TABLES_ADDROW", payload: { table: "pmdmrequestswip", row:row} })
-      this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "PMDMREQUESTSWIP_ADD", payload: row } })
+  
+  startWIP(wo){
+    let time = new Date().toLocaleString().replace(",", "")
+    let wip = {
+      id: -1, requestid: wo.requestid, module: "DM", technician: this.fmtables.user.username, starttime: time, endtime: null, uuid: new Date().getTime() + wo.requestid
     }
-    this.saveState(wo)
+    this.store.dispatch({ type: "FMCOMMON_TABLES_ADDROW", payload: { table: "pmdmrequestswip", row: wip } })
+    this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "PMDMREQUESTSWIP_ADD", payload: wip } })
+  }
+  stopWIP(wip,wo){
+    wip.endtime = new Date().toLocaleString().replace(",", "")
+    let diff: number = new Date(wip.endtime).getTime() - new Date(wip.starttime).getTime()
+    diff = diff / (60 * 60 * 1000)
+    let labor = {
+      id: -1, maintid: wo.requestid, mainttype: "DMR", type: "Labor", hours: diff.toFixed(2), rate: this.fmtables.user.billrate,
+      description: "added as WIP hrs", partcost: 0, partqty: 0, workingdate: this.toDateString(new Date()), uuid: new Date().getTime() + wo.requestid
+    }
+    this.store.dispatch({ type: "FMCOMMON_TABLES_ADDROW", payload: { table: "pmpartslabor", row: labor } })
+    this.store.dispatch({ type: "FMCOMMON_TABLES_UPDATEROW", payload: { table: "pmdmrequestswip", row: wip } })
+    this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "PMPARTSLABOR_ADD", payload: labor } })
+    this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "PMDMREQUESTSWIP_SAVE", payload: wip } })
+  }
+  toggleWip(wo) {
+    let wip = this.wips.find(rs => rs.requestid == wo.requestid && !rs.endtime)
+    let status: string;
+    if (wip) {
+      this.stopWIP(wip,wo)
+      status = "Open"
+    } else {
+      this.startWIP(wo)
+      status = this.fmtables.appvars.PMDMWIPTechStatusValue || wo.techstatus
+    }
+    wo.techstatus = status
+    this.store.dispatch(new DM.Save(wo))
+    this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "DM_SAVE", payload: { requestid: wo.requestid, techstatus: wo.techstatus } } })
   }
 
   closeWO(wo) {
-    wo.techstatus = 'Closed'
-    this.toggleWip(wo)
+    let wip = this.wips.find(rs => rs.requestid == wo.requestid && !rs.endtime)
+    if(wip)
+      this.stopWIP(wip,wo)
+    wo.techstatus="Closed"
+    this.store.dispatch(new DM.Close(wo))
+    this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "DM_SAVE", payload: { requestid: wo.requestid, techstatus: wo.techstatus } } })
   }
 
   saveState(wo) {
-    if(wo.techstatus=="Closed"){
+    if (wo.techstatus == "Closed") {
       this.store.dispatch(new DM.Close(wo))
-    }else{
+    } else {
       this.store.dispatch(new DM.Save(wo))
     }
-    this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "DM_SAVE", payload: wo } })
+    let x = { requestid: wo.requestid, techstatus: wo.techstatus }
+    this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "DM_SAVE", payload: x } })
   }
 
   signWO(wo) {
@@ -90,7 +107,9 @@ export class DMTasksPage {
     m.onDidDismiss((d) => {
       if (!wo.signature) {
         wo.signature = d;
-        this.saveState(wo)
+        this.store.dispatch(new DM.Save(wo))
+        let x = { requestid: wo.requestid, signature: wo.signature, techstatus: wo.techstatus }
+        this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "DM_SAVE", payload: x } })
       }
     })
     m.present()

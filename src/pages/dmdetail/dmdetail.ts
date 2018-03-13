@@ -1,7 +1,7 @@
 import { Component, animate } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { AppState, PMPartslabor } from '../../appstate/app.state';
+import { AppState, PMPartslabor, FMTables } from '../../appstate/app.state';
 import { Observable } from 'rxjs/Rx';
 import * as DM from "../dm/dmredux"
 
@@ -18,15 +18,17 @@ export class DmdetailPage {
   private dox: any[];
   private statusTypes: any[]
   private partlabor: PMPartslabor[];
-  private user:any;
+  private user: any;
+  private fmtables: FMTables
   constructor(public navCtrl: NavController, public navParams: NavParams, private store: Store<AppState>) {
     this.index = this.navParams.get("index")
     this.store.subscribe(data => {
       this.wosLen = data.dms.length;
       this.rs = data.dms[this.index]
       data.fmtables["priority"].forEach(itm => this.priority[itm.value] = itm.color)
+      this.fmtables = data.fmtables
       this.partlabor = data.fmtables.pmpartslabor
-      this.user=data.fmtables.user;
+      this.user = data.fmtables.user;
       this.dox = data.fmtables.documents.filter(x => x.uid == this.rs.uid || x.uid == this.rs.recurrenceid)
       this.statusTypes = data.fmtables.pmdmstatustypes
     })
@@ -44,26 +46,26 @@ export class DmdetailPage {
     else
       this.navCtrl.pop({ animate: true, animation: "ios-transition", direction: "back", duration: 300 })
   }
-  
+
   parts() {
     return this.partlabor.filter(row => row.type == "Part" && row.maintid == this.rs.requestid)
   }
   labor() {
     return this.partlabor.filter(row => row.type == "Labor" && row.maintid == this.rs.requestid)
   }
-  
-  private techcomments:string;
+
+  private techcomments: string;
   saveState(wo) {
-    let tmp={...wo,techcomments:this.techcomments}
-    wo.techcomments=this.techcomments+"<br>"+wo.techcomments
+    let tmp = { requestid:wo.requestid,techstatus:wo.techstatus, techcomments: this.techcomments }
+    wo.techcomments = this.techcomments + "<br>" + wo.techcomments
     this.store.dispatch({ type: "SYNCQUEUE_ADD", command: { name: "DM_SAVE", payload: tmp } })
-    if(wo.techstatus=="Closed"){
+    if (wo.techstatus == "Closed") {
       this.store.dispatch(new DM.Close(wo))
       this.navCtrl.pop({ animate: true, animation: "ios-transition", direction: "back", duration: 300 })
-    }else{
+    } else {
       this.store.dispatch(new DM.Save(wo))
     }
-    this.techcomments=""
+    this.techcomments = ""
   }
 
   addPart(part: PMPartslabor) {
